@@ -72,8 +72,7 @@ cd build && cargo run -p keyroost
 
 `.github/workflows/package.yml` builds all three artifacts (AppImage, Setup .exe,
 DMG) on manual dispatch or a version tag, and uploads them. The artifacts are
-**unsigned** — fine for demonstrating the build; add code signing for production
-(see packaging notes).
+**unsigned** — fine for demonstrating the build; We will use code signing for Releases
 
 ## Trademark
 
