@@ -1,0 +1,120 @@
+# Demonstrates building distributable artifacts for Token2 Companion Keyroost:
+#   * Linux  -> AppImage (single self-contained executable)
+#   * Windows -> Setup .exe installer (Inno Setup)
+#
+# This rebrands a clean keyroost checkout (the OTP feature is upstream now) and
+# then packages it. It runs on manual dispatch and on version tags. macOS .dmg
+# is intentionally omitted here (to be added later).
+#
+# Note: this is illustrative packaging for a downstream distributable. It does
+# not sign the artifacts; production releases should add code signing
+# (Authenticode on Windows, and notarization on macOS once the .dmg is added).
+name: Package distributables
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+env:
+  REBRAND_REPO: https://github.com/framefilter/keyroost.git
+  REBRAND_REF: main
+  APP_NAME: "Token2 Companion Rust version - Keyroost"
+
+jobs:
+  # ---------------------------------------------------------------------------
+  linux-appimage:
+    name: Linux · AppImage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            git python3 \
+            libpcsclite-dev libxkbcommon-dev libwayland-dev \
+            libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev \
+            libgl1-mesa-dev libssl-dev libfuse2
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Rebrand a clean keyroost checkout
+        run: |
+          chmod +x ./rebrand-token2-companion.sh ./apply_branding.py
+          ./rebrand-token2-companion.sh \
+            --repo "$REBRAND_REPO" --ref "$REBRAND_REF" \
+            --name "$APP_NAME" --out build
+
+      - name: Build the AppImage
+        run: |
+          chmod +x ./packaging/linux/build-appimage.sh
+          ./packaging/linux/build-appimage.sh --project ./build --name "$APP_NAME"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-appimage
+          path: build/dist/*.AppImage
+
+  # ---------------------------------------------------------------------------
+  windows-installer:
+    name: Windows · Setup .exe
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Pillow for icon conversion
+        run: python -m pip install --upgrade pillow
+
+      - name: Rebrand a clean keyroost checkout
+        shell: pwsh
+        run: |
+          .\rebrand-token2-companion.ps1 -Repo $Env:REBRAND_REPO -Ref $Env:REBRAND_REF `
+            -Name $Env:APP_NAME -Out build
+
+      - name: Build the installer
+        shell: pwsh
+        run: |
+          .\packaging\windows\build-installer.ps1 -Project .\build -Name $Env:APP_NAME -Version "0.4.0"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: build/dist/*setup.exe
+
+  # ---------------------------------------------------------------------------
+  macos-dmg:
+    name: macOS · DMG
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin, x86_64-apple-darwin
+
+      - name: Rebrand a clean keyroost checkout
+        run: |
+          chmod +x ./rebrand-token2-companion.sh ./apply_branding.py
+          ./rebrand-token2-companion.sh \
+            --repo "$REBRAND_REPO" --ref "$REBRAND_REF" \
+            --name "$APP_NAME" --out build
+
+      - name: Build the DMG (universal2)
+        run: |
+          chmod +x ./packaging/macos/build-dmg.sh
+          ./packaging/macos/build-dmg.sh --project ./build --name "$APP_NAME" --universal
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-dmg
+          path: build/dist/*.dmg

@@ -1,0 +1,17 @@
+# Rebranded checkout(s) and build output produced by the scripts
+/build/
+**/target/
+**/dist/
+
+# Filled-in installer script and generated icons
+packaging/windows/*.filled.iss
+packaging/windows/app.ico
+
+# Docs build output
+/token2-docs-site/
+docs-builder/token2-docs-site/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp

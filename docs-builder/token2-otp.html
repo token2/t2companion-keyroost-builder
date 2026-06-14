@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token2 on-device OTP — TOTP &amp; HOTP on the FIDO key — keyroost</title>
+<meta name="description" content="The Token2 on-device OTP applet: a separate TOTP/HOTP store on Token2 PIN+ / T2F2 FIDO keys, reached over CCID/NFC or USB-HID, and what keyroost can do with it.">
+<link rel="stylesheet" href="assets/keyroost-theme.css">
+<link rel="stylesheet" href="assets/site.css">
+<script>(function(){try{var t=localStorage.getItem('kr-theme');if(t==='light'||(!t&&window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches))document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="kr-topbar">
+  <div class="kr-wrap kr-topbar-inner">
+    <a class="kr-wordmark" href="index.html" aria-label="keyroost — home"><span class="kr-mark mono">k</span><span>keyroost</span></a>
+    <nav class="kr-nav" aria-label="Learn topics">
+      <a href="security-keys.html">Security keys</a>
+      <a href="fido2.html">FIDO2</a>
+      <a href="oath.html">OATH</a>
+      <a href="token2-otp.html">Token2 OTP</a>
+      <a href="openpgp.html">OpenPGP</a>
+      <a href="piv.html">PIV</a>
+      <a href="molto2.html">Molto2</a>
+      <a href="naming.html">Naming</a>
+      <a href="reset.html">Reset</a>
+    </nav>
+    <button class="kr-theme-toggle" id="kr-theme-toggle" type="button" aria-label="Toggle light/dark theme" title="Toggle theme">◐</button>
+  </div>
+</header>
+
+<section class="kr-hero">
+  <div class="kr-wrap">
+    <p class="kr-label">Learn · Token2 OTP</p>
+    <h1>Token2 on-device OTP</h1>
+    <p class="kr-lede">TOTP and HOTP credentials stored and computed on a Token2 FIDO
+      key's own OTP applet — a separate applet from the Yubico/Trussed
+      <a href="oath.html">OATH</a> one, reached over the key's CCID/NFC or USB-HID
+      interface.</p>
+  </div>
+</section>
+
+<main class="kr-wrap">
+
+  <section class="kr-section">
+    <h2>What it is</h2>
+    <p>Token2 PIN+ / T2F2 FIDO keys carry a dedicated on-device OTP applet that stores
+      one-time-password credentials — <strong>TOTP</strong> (time-based, RFC&nbsp;6238) and
+      <strong>HOTP</strong> (counter-based, RFC&nbsp;4226) — directly on the key. As with any
+      hardware OTP, the seed is shared with the service once at setup; afterward the key
+      computes the short code on demand from that seed plus the current time or counter. The
+      seed itself never leaves the key.</p>
+    <p>This is a <strong>different applet</strong> from the Yubico/Trussed OATH applet
+      described on the <a href="oath.html">OATH page</a>. It has its own application
+      identifier, its own wire protocol, and its own on-device encryption: each provisioning
+      command seals the seed to the key with an ephemeral ECDH (P-256) handshake and
+      AES-256-CBC, so the seed is never sent in the clear even across the local USB or
+      contactless link.</p>
+    <div class="kr-callout note">
+      <div class="kr-callout-title note">One applet, two ways in</div>
+      <p>The OTP applet answers over both the key's smart-card (CCID/NFC) interface and its
+        USB-HID interface. Some keys ship with HID disabled; in that case the applet is still
+        fully usable over CCID. keyroost auto-detects which interface is live and uses it, or
+        you can force one explicitly.</p>
+    </div>
+  </section>
+
+  <section class="kr-section">
+    <h2>How it compares</h2>
+    <ul>
+      <li><strong>vs. an authenticator app:</strong> seeds live on tamper-resistant hardware
+        rather than a phone backup that can sync to the cloud or be cloned, and a credential
+        can optionally require a physical button press before it releases a code.</li>
+      <li><strong>vs. the Yubico/Trussed OATH applet:</strong> the same TOTP/HOTP standards and
+        the same on-hardware benefit, but a Token2-specific applet and protocol. On a Token2
+        key this is the native OTP store.</li>
+      <li><strong>vs. FIDO2:</strong> OTP is <em>not</em> phishing-resistant — a code can be
+        typed into a look-alike site and replayed within its window. Use
+        <a href="fido2.html">FIDO2</a> where the site supports it; use OTP where it only offers
+        "authenticator app."</li>
+    </ul>
+    <div class="kr-callout note">
+      <div class="kr-callout-title note">Button (keystroke) HOTP</div>
+      <p>Beyond the stored credentials, the applet has a single HOTP-on-button slot: the key
+        types a fresh HOTP code as keystrokes when touched outside any session (useful for
+        systems such as UserLock). This is configured separately and is independent of the
+        listed credentials.</p>
+    </div>
+  </section>
+
+  <section class="kr-section">
+    <h2>What keyroost does with Token2 OTP</h2>
+    <div class="kr-tool">
+      <span class="kr-mark mono">k</span>
+      <p>Over the auto-selected transport (CCID/NFC or USB-HID): <strong>list</strong>
+        credentials and show live codes, <strong>add</strong> and <strong>delete</strong> them,
+        <strong>erase</strong> all entries, read the device <strong>serial number</strong>, and
+        configure the <strong>button HOTP</strong> keystroke slot — all with an in-tree,
+        pure-Rust byte layer (APDU framing, the ECDH/AES seal, and the variable-length entry
+        parser), no vendor SDK.</p>
+    </div>
+<pre><code>keyroostctl otp list
+keyroostctl otp get --app GitHub --account alice
+"JBSWY3DPEHPK3PXP" | keyroostctl otp add --app GitHub --account alice --seed-stdin
+keyroostctl otp --transport ccid list
+keyroostctl otp serial</code></pre>
+    <p>In the desktop app, Token2 keys gain an <strong>On-device OTP</strong> tab showing each
+      credential with a live code and copy / delete actions, an add dialog (issuer, account,
+      Base32 secret, TOTP/HOTP, SHA-1/SHA-256, digits, period, and an optional touch
+      requirement), and a transport selector.</p>
+    <div class="kr-callout note">
+      <div class="kr-callout-title note">Seeds are handled carefully</div>
+      <p>Base32 seeds are taken from stdin or an environment variable — never command
+        arguments, which would leak into shell history and process listings — and the
+        in-memory copy is zeroized after use.</p>
+    </div>
+  </section>
+
+  <section class="kr-section kr-res-section">
+    <h2>Authoritative resources</h2>
+    <div class="kr-res">
+      <a href="https://datatracker.ietf.org/doc/html/rfc6238"><span class="who">IETF</span>RFC 6238 — TOTP</a>
+      <a href="https://datatracker.ietf.org/doc/html/rfc4226"><span class="who">IETF</span>RFC 4226 — HOTP</a>
+      <a href="https://www.token2.com/"><span class="who">Token2</span>PIN+ / T2F2 FIDO keys</a>
+    </div>
+    <p class="kr-related" style="margin-top:18px"><a class="kr-btn kr-btn-default" href="openpgp.html">Next: OpenPGP →</a></p>
+  </section>
+
+</main>
+
+<footer class="kr-footer">
+  <div class="kr-wrap">
+    <p><span class="kr-pill kr-pill-brand">keyroost</span> &nbsp;Independent, open-source Rust toolchain for hardware security keys. <a href="https://github.com/framefilter/keyroost">Source →</a></p>
+    <p class="kr-small">Not affiliated with or endorsed by any vendor; product names are descriptive and remain their owners' trademarks.</p>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>
