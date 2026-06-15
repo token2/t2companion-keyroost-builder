@@ -1,11 +1,12 @@
-﻿<#
+<#
 .SYNOPSIS
   Generates "Token2 Companion Keyroost" from a clean keyroost checkout (Windows).
 
 .DESCRIPTION
   Keeps all Token2 branding OUT of the keyroost repository. It:
     1. clones keyroost (upstream or your fork) at a chosen ref,
-    2. applies the Token2 OTP feature patch (functionality only - no branding),
+    2. optionally applies one or more feature patches (functionality only - no
+       branding), in the order given,
     3. overlays branding: app name, window title, brand tile, accent palette
        (Token2 red), the window icon, and companion-style layout tweaks,
     4. leaves a ready-to-build, rebranded project directory.
@@ -15,11 +16,18 @@
 .EXAMPLE
   .\rebrand-token2-companion.ps1
   .\rebrand-token2-companion.ps1 -Repo https://github.com/<you>/keyroost.git -Ref main -Out token2-companion
+
+.EXAMPLE
+  # Layer optional features on top of the base checkout (applied in order):
+  .\rebrand-token2-companion.ps1 -Patch bio-full.patch,otp-overview-card.patch
 #>
 param(
   [string]$Repo  = "https://github.com/framefilter/keyroost.git",
   [string]$Ref   = "main",
-  [string]$Patch = "NUL",
+  # One or more feature patches to apply (in order), e.g.
+  #   -Patch bio-full.patch,otp-overview-card.patch
+  # Leave as "NUL" (the default) to apply none. A single path also works.
+  [string[]]$Patch = @("NUL"),
   [string]$Out   = ".\token2-companion-keyroost",
   [string]$DocsUrl = "https://www.token2.swiss/kr-docs",
   [string]$Name = "Token2 Companion Rust version - Keyroost"
@@ -27,7 +35,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $SelfDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-if ([string]::IsNullOrEmpty($Patch)) { $Patch = "NUL" }
+if ($null -eq $Patch -or $Patch.Count -eq 0) { $Patch = @("NUL") }
 
 $AppName     = $Name
 $Tagline     = "Manage Token2 and other FIDO2 / OATH / PIV / OpenPGP keys"
@@ -64,21 +72,32 @@ if ((Invoke-Git -C $Out checkout $Ref) -ne 0) { throw "git checkout failed" }
 # process working dir (often the user home).
 $Out = (Resolve-Path $Out).Path
 
-# ---- 2. apply the OTP feature patch ----------------------------------------
-# The Token2 OTP feature is merged upstream, so the default is to skip the patch
-# (-Patch NUL). Pass -Patch <file> only when building against a base that lacks it.
-if ($Patch -eq "NUL" -or [string]::IsNullOrEmpty($Patch)) {
-  Say "Skipping patch - the OTP feature is expected to be in $Repo already"
-} elseif (Test-Path $Patch) {
-  Say "Applying Token2 OTP feature patch"
-  $chk = Invoke-Git -C $Out apply --check $Patch
-  if ($chk -eq 0) {
-    if ((Invoke-Git -C $Out apply $Patch) -ne 0) { throw "git apply failed" }
-  } else {
-    throw "patch did not apply cleanly against $Ref"
-  }
+# ---- 2. apply feature patches ----------------------------------------------
+# The Token2 OTP feature is merged upstream, so by default no patch is applied
+# (-Patch NUL). Pass one or more patch files to layer optional features on top,
+# e.g. fingerprint management and the OTP overview card:
+#   -Patch bio-full.patch,otp-overview-card.patch
+# Patches are applied in the order given; each must apply cleanly.
+$patchList = @($Patch | Where-Object {
+  $_ -and $_ -ne "NUL" -and -not [string]::IsNullOrEmpty($_)
+})
+if ($patchList.Count -eq 0) {
+  Say "Skipping patches - the OTP feature is expected to be in $Repo already"
 } else {
-  throw "patch file not found: $Patch"
+  foreach ($pf in $patchList) {
+    # Resolve to an absolute path: the patch is given relative to the caller's
+    # location, but git runs with -C $Out, so a relative path would be wrong.
+    $pfFull = $pf
+    if (Test-Path $pf) { $pfFull = (Resolve-Path $pf).Path }
+    if (-not (Test-Path $pfFull)) { throw "patch file not found: $pf" }
+    Say "Applying patch: $(Split-Path -Leaf $pfFull)"
+    $chk = Invoke-Git -C $Out apply --check $pfFull
+    if ($chk -eq 0) {
+      if ((Invoke-Git -C $Out apply $pfFull) -ne 0) { throw "git apply failed: $pf" }
+    } else {
+      throw "patch did not apply cleanly against $Ref : $pf"
+    }
+  }
 }
 
 # ---- 3. branding overlay ---------------------------------------------------
