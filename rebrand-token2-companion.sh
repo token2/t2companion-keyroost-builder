@@ -6,7 +6,8 @@
 #
 # This script keeps ALL Token2 branding OUT of the keyroost repository. It:
 #   1. clones keyroost (upstream or your fork) at a chosen ref,
-#   2. applies the Token2 OTP feature patch (functionality only — no branding),
+#   2. optionally applies one or more feature patches (functionality only — no
+#      branding), in the order given,
 #   3. overlays branding as a post-checkout transform: app name, window title,
 #      brand tile, accent palette (Token2 red), the window icon, and the
 #      companion-app-style layout tweaks,
@@ -15,12 +16,13 @@
 # Nothing here is committed to keyroost; the rebrand is reproducible on demand.
 #
 # Usage:
-#   ./rebrand-token2-companion.sh [--repo URL] [--ref REF] [--patch FILE] [--out DIR]
+#   ./rebrand-token2-companion.sh [--repo URL] [--ref REF] [--patch FILE]... [--out DIR]
+#   --patch is repeatable, e.g. --patch bio-full.patch --patch otp-overview-card.patch
 #
 # Defaults:
 #   --repo   https://github.com/framefilter/keyroost.git   (use your fork to include the PR)
 #   --ref    main
-#   --patch  ./token2-otp-complete.patch
+#   --patch  (none; OTP feature is upstream)
 #   --out    ./token2-companion-keyroost
 #
 set -euo pipefail
@@ -28,7 +30,7 @@ set -euo pipefail
 # ---- configuration ---------------------------------------------------------
 REPO="https://github.com/framefilter/keyroost.git"
 REF="main"
-PATCH="NUL"   # OTP feature is upstream now; pass --patch <file> to force-apply
+PATCHES=()   # OTP feature is upstream now; pass --patch <file> (repeatable) to layer features
 OUT="./token2-companion-keyroost"
 SELF_DIR="$(cd "$(dirname "$0")" && pwd)"
 
@@ -47,7 +49,7 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --repo)  REPO="$2"; shift 2;;
     --ref)   REF="$2"; shift 2;;
-    --patch) PATCH="$2"; shift 2;;
+    --patch) PATCHES+=("$2"); shift 2;;
     --out)   OUT="$2"; shift 2;;
     --name)  APP_NAME="$2"; shift 2;;
     --docs-url) DOCS_URL="$2"; shift 2;;
@@ -68,18 +70,28 @@ say "Cloning $REPO @ $REF"
 git clone "$REPO" "$OUT"
 git -C "$OUT" checkout "$REF"
 
-# ---- 2. apply the OTP feature patch (functionality only) -------------------
-if [[ -f "$PATCH" ]]; then
-  say "Applying Token2 OTP feature patch"
-  if git -C "$OUT" apply --check "$PATCH" 2>/dev/null; then
-    git -C "$OUT" apply "$PATCH"
-  else
-    echo "  ! patch did not apply cleanly against $REF." >&2
-    echo "  ! If you are cloning a fork that already contains the feature, re-run with --patch /dev/null" >&2
-    [[ "$PATCH" != "/dev/null" ]] && exit 1
-  fi
+# ---- 2. apply feature patches (functionality only) -------------------------
+# Pass --patch <file> one or more times to layer optional features (applied in
+# order), e.g. --patch bio-full.patch --patch otp-overview-card.patch
+if [[ ${#PATCHES[@]} -eq 0 ]]; then
+  say "No patches given — assuming features are already in $REPO"
 else
-  say "No patch file at '$PATCH' — assuming the feature is already in $REPO"
+  for PF in "${PATCHES[@]}"; do
+    if [[ ! -f "$PF" ]]; then
+      echo "  ! patch file not found: $PF" >&2
+      exit 1
+    fi
+    # Resolve to absolute: git runs with -C "$OUT", so a relative path (given
+    # relative to the caller's CWD) would otherwise not be found.
+    PF_ABS="$(cd "$(dirname "$PF")" && pwd)/$(basename "$PF")"
+    say "Applying patch: $(basename "$PF")"
+    if git -C "$OUT" apply --check "$PF_ABS" 2>/dev/null; then
+      git -C "$OUT" apply "$PF_ABS"
+    else
+      echo "  ! patch did not apply cleanly against $REF: $PF" >&2
+      exit 1
+    fi
+  done
 fi
 
 # ---- 3. branding overlay ---------------------------------------------------
