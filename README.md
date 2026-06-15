@@ -1,85 +1,70 @@
-# t2companion-keyroost-builder
+# Token2 Companion rebrand — optional feature patches
 
-Build scripts and packaging recipes for **Token2 Companion Rust version -
-Keyroost** — a Token2-focused distribution of the open-source
-[keyroost](https://github.com/framefilter/keyroost) security-key toolchain.
+These are drop-in replacements for the `rebrand-token2-companion.ps1` /
+`rebrand-token2-companion.sh` scripts in the `t2companion-keyroost-builder`
+repo, updated so the rebrand can **optionally layer one or more feature
+patches** on top of the upstream keyroost checkout before branding.
 
-This repository carries **only the recipes**, not a copy of keyroost. Each build
-rebrands a fresh upstream checkout, so there's nothing to keep in sync and no
-vendored source. The Token2 on-device OTP feature is already merged upstream, so
-no patch is needed for current builds (one is included for building against
-older bases).
+## What changed
 
-## What's here
+The `-Patch` parameter (PowerShell) / `--patch` flag (shell) now accepts
+**multiple patches**, applied in the order given. Passing none (the default)
+skips patching, exactly as before — the base OTP feature is already upstream.
 
-```
-.
-├── rebrand-token2-companion.ps1 / .sh   rebrand the app (clone -> brand -> ready to build)
-├── apply_branding.py                    source-transform helper used by the above
-├── branding/                            logo, background, generated app icons
-├── token2-otp-complete.patch            OTP feature patch (only for pre-merge bases)
-├── packaging/                           turn the built app into distributables
-│   ├── linux/build-appimage.sh              -> .AppImage
-│   ├── windows/  (build-installer.ps1, .iss) -> Setup .exe (Inno Setup)
-│   ├── macos/build-dmg.sh                    -> .dmg (universal2 .app)
-│   └── README.md
-├── docs-builder/                        build the documentation site
-│   ├── build-token2-docs.ps1 / .sh
-│   └── ...
-└── .github/workflows/package.yml        CI: builds AppImage + Setup .exe + DMG
-```
+- PowerShell: `-Patch` is now an array. `-Patch a.patch,b.patch`
+- Shell: `--patch` is now repeatable. `--patch a.patch --patch b.patch`
 
-## Quick start
+Each patch is resolved to an absolute path and checked with `git apply --check`
+before being applied, so a patch that doesn't fit the chosen base fails loudly
+instead of half-applying.
 
-**1. Rebrand the app** (produces a buildable, branded checkout):
+## The two included patches
 
-```powershell
-# Windows
-.\rebrand-token2-companion.ps1 -Out build
-```
-```bash
-# Linux / macOS
-./rebrand-token2-companion.sh --out build
-```
+Both apply cleanly on top of upstream `framefilter/keyroost` main, in this order:
 
-Defaults: repo `framefilter/keyroost`, ref `main`, name "Token2 Companion Rust
-version - Keyroost", patch skipped (feature is upstream). Override with
-`-Repo/-Ref/-Name/-DocsUrl` (PowerShell) or `--repo/--ref/--name/--docs-url`
-(bash).
+1. **`bio-full.patch`** — fingerprint (CTAP2 bio-enrollment) management:
+   CLI commands (`fido-fingerprint-list/-enroll/-rename/-delete`) and the GUI
+   Fingerprints card in the Passkeys tab (enroll wizard, rename, delete with
+   confirmation, auto-load on unlock). Also includes the CTAPHID keepalive
+   timeout fix needed for user-presence operations.
+2. **`otp-overview-card.patch`** — adds an On-device OTP card to the Overview
+   tab, shown when the key has the OTP applet (matching the Passkeys / PIV /
+   OpenPGP cards).
 
-**2. Build and run** (needs a Rust toolchain + platform deps):
+## Usage
 
-```bash
-cd build && cargo run -p keyroost
-```
-
-**3. Package a distributable** — see [`packaging/README.md`](packaging/README.md):
-
-```bash
-./packaging/linux/build-appimage.sh   --project ./build                  # Linux  -> .AppImage
-./packaging/macos/build-dmg.sh        --project ./build --universal      # macOS  -> .dmg
-# Windows (PowerShell, Inno Setup installed):
-.\packaging\windows\build-installer.ps1 -Project .\build                 # -> Setup .exe
-```
-
-**Docs site** — see [`docs-builder/README.md`](docs-builder/README.md):
+PowerShell (Windows):
 
 ```powershell
-.\docs-builder\build-token2-docs.ps1 -Out token2-docs-site
+.\rebrand-token2-companion.ps1 `
+  -Patch bio-full.patch,otp-overview-card.patch
 ```
 
-## CI
+Shell (Linux / macOS):
 
-`.github/workflows/package.yml` builds all three artifacts (AppImage, Setup .exe,
-DMG) on manual dispatch or a version tag, and uploads them. The artifacts are
-**unsigned** — fine for demonstrating the build; We will use code signing for Releases
+```bash
+./rebrand-token2-companion.sh \
+  --patch bio-full.patch \
+  --patch otp-overview-card.patch
+```
 
-## Trademark
+Apply only fingerprints, or only the OTP card, by passing just that one patch.
+Pass none to build the plain upstream feature set:
 
-The Token2 name and logo are used here by the trademark owner.
+```powershell
+.\rebrand-token2-companion.ps1            # no extra features
+.\rebrand-token2-companion.ps1 -Patch bio-full.patch   # fingerprints only
+```
 
-## License
+## Notes
 
-Pick a license for the build scripts (MIT recommended) and add a LICENSE file.
-keyroost itself is dual MIT / Apache-2.0; this repo does not redistribute it — it
-builds from upstream at run time.
+- Order matters only in that both must apply against the same base; the order
+  above is verified. If you add more patches later, put the larger/structural
+  ones first.
+- These patches were built against upstream `main`. If you instead point the
+  rebrand at a fork/branch that already contains some of these changes (e.g. a
+  branch with the fingerprint work merged), drop the corresponding patch so it
+  doesn't conflict.
+- The PowerShell script keeps its required UTF-8 BOM and ASCII-only body; don't
+  re-save it as UTF-16 or introduce smart quotes/em-dashes, which break the
+  parser.
