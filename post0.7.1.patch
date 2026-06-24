@@ -1,0 +1,3576 @@
+diff --git a/Cargo.lock b/Cargo.lock
+index d68f0a3..4eec171 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -163,6 +163,12 @@ dependencies = [
+  "windows-sys 0.61.2",
+ ]
+ 
++[[package]]
++name = "anyhow"
++version = "1.0.102"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "7f202df86484c868dbad7eaa557ef785d5c66295e41b460ef922eca0723b842c"
++
+ [[package]]
+ name = "arboard"
+ version = "3.6.1"
+@@ -326,6 +332,12 @@ dependencies = [
+  "syn 2.0.117",
+ ]
+ 
++[[package]]
++name = "byteorder"
++version = "1.5.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
++
+ [[package]]
+ name = "byteorder-lite"
+ version = "0.1.0"
+@@ -614,6 +626,19 @@ version = "0.8.7"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
+ 
++[[package]]
++name = "core-graphics"
++version = "0.22.3"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "2581bbab3b8ffc6fcbd550bf46c355135d16e9ff2a6ea032ad6b9bf1d7efe4fb"
++dependencies = [
++ "bitflags 1.3.2",
++ "core-foundation 0.9.4",
++ "core-graphics-types",
++ "foreign-types 0.3.2",
++ "libc",
++]
++
+ [[package]]
+ name = "core-graphics"
+ version = "0.23.2"
+@@ -623,7 +648,7 @@ dependencies = [
+  "bitflags 1.3.2",
+  "core-foundation 0.9.4",
+  "core-graphics-types",
+- "foreign-types",
++ "foreign-types 0.5.0",
+  "libc",
+ ]
+ 
+@@ -699,6 +724,17 @@ version = "1.2.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "f27ae1dd37df86211c42e150270f82743308803d90a6f6e6651cd730d5e1732f"
+ 
++[[package]]
++name = "dbus"
++version = "0.9.11"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "b942602992bb7acfd1f51c49811c58a610ef9181b6e66f3e519d79b540a3bf73"
++dependencies = [
++ "libc",
++ "libdbus-sys",
++ "windows-sys 0.61.2",
++]
++
+ [[package]]
+ name = "der"
+ version = "0.7.10"
+@@ -749,6 +785,20 @@ dependencies = [
+  "objc2 0.6.4",
+ ]
+ 
++[[package]]
++name = "display-info"
++version = "0.4.8"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "4ba4b5ddb26d674c9cd40b7a747e42658ffe1289843615b838532f660e0e3dd0"
++dependencies = [
++ "anyhow",
++ "core-graphics 0.23.2",
++ "fxhash",
++ "widestring",
++ "windows 0.52.0",
++ "xcb",
++]
++
+ [[package]]
+ name = "displaydoc"
+ version = "0.2.5"
+@@ -1021,6 +1071,15 @@ version = "0.2.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "77ce24cb58228fbb8aa041425bb1050850ac19177686ea6e0f41a70416f56fdb"
+ 
++[[package]]
++name = "foreign-types"
++version = "0.3.2"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "f6f339eb8adc052cd2ca78910fda869aefa38d22d5cb648e6485e4d3fc06f3b1"
++dependencies = [
++ "foreign-types-shared 0.1.1",
++]
++
+ [[package]]
+ name = "foreign-types"
+ version = "0.5.0"
+@@ -1028,7 +1087,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "d737d9aa519fb7b749cbc3b962edcf310a8dd1f4b67c91c4f83975dbdd17d965"
+ dependencies = [
+  "foreign-types-macros",
+- "foreign-types-shared",
++ "foreign-types-shared 0.3.1",
+ ]
+ 
+ [[package]]
+@@ -1042,6 +1101,12 @@ dependencies = [
+  "syn 2.0.117",
+ ]
+ 
++[[package]]
++name = "foreign-types-shared"
++version = "0.1.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "00b0228411908ca8685dba7fc2cdd70ec9990a6e753e89b6ac91a84c40fbaf4b"
++
+ [[package]]
+ name = "foreign-types-shared"
+ version = "0.3.1"
+@@ -1081,6 +1146,15 @@ dependencies = [
+  "slab",
+ ]
+ 
++[[package]]
++name = "fxhash"
++version = "0.2.1"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "c31b6d751ae2c7f11320402d34e41349dd1016f8d5d45e48c4312bc8625af50c"
++dependencies = [
++ "byteorder",
++]
++
+ [[package]]
+ name = "g2gen"
+ version = "1.2.2"
+@@ -1293,7 +1367,7 @@ dependencies = [
+  "presser",
+  "thiserror 1.0.69",
+  "winapi",
+- "windows",
++ "windows 0.52.0",
+ ]
+ 
+ [[package]]
+@@ -1530,7 +1604,7 @@ dependencies = [
+  "byteorder-lite",
+  "moxcms",
+  "num-traits",
+- "png",
++ "png 0.18.1",
+ ]
+ 
+ [[package]]
+@@ -1670,10 +1744,12 @@ dependencies = [
+  "keyroost-resolve",
+  "keyroost-rsakey",
+  "keyroost-token2otp",
++ "keyroost-token2prog",
+  "keyroost-transport",
+- "png",
++ "png 0.18.1",
+  "pollster",
+  "rfd",
++ "screenshots",
+  "serde",
+  "serde_json",
+  "zeroize",
+@@ -1754,7 +1830,7 @@ version = "0.7.1"
+ dependencies = [
+  "jpeg-decoder",
+  "keyroost-import",
+- "png",
++ "png 0.18.1",
+  "rqrr",
+  "zeroize",
+ ]
+@@ -1766,6 +1842,7 @@ dependencies = [
+  "keyroost-hid",
+  "keyroost-keyring",
+  "keyroost-proto",
++ "keyroost-token2prog",
+  "keyroost-transport",
+ ]
+ 
+@@ -1790,6 +1867,13 @@ dependencies = [
+  "zeroize",
+ ]
+ 
++[[package]]
++name = "keyroost-token2prog"
++version = "0.7.1"
++dependencies = [
++ "keyroost-proto",
++]
++
+ [[package]]
+ name = "keyroost-transport"
+ version = "0.7.1"
+@@ -1806,6 +1890,7 @@ dependencies = [
+  "keyroost-piv",
+  "keyroost-proto",
+  "keyroost-token2otp",
++ "keyroost-token2prog",
+  "pcsc",
+  "zeroize",
+ ]
+@@ -1829,6 +1914,7 @@ dependencies = [
+  "keyroost-resolve",
+  "keyroost-rsakey",
+  "keyroost-token2otp",
++ "keyroost-token2prog",
+  "keyroost-transport",
+  "serde",
+  "serde_json",
+@@ -1867,6 +1953,16 @@ version = "0.2.186"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "68ab91017fe16c622486840e4c83c9a37afeff978bd239b5293d61ece587de66"
+ 
++[[package]]
++name = "libdbus-sys"
++version = "0.2.7"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "328c4789d42200f1eeec05bd86c9c13c7f091d2ba9a6ea35acdf51f31bc0f043"
++dependencies = [
++ "cc",
++ "pkg-config",
++]
++
+ [[package]]
+ name = "libloading"
+ version = "0.8.9"
+@@ -1985,7 +2081,7 @@ dependencies = [
+  "bitflags 2.11.1",
+  "block",
+  "core-graphics-types",
+- "foreign-types",
++ "foreign-types 0.5.0",
+  "log",
+  "objc",
+  "paste",
+@@ -2616,6 +2712,19 @@ version = "0.2.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "b4596b6d070b27117e987119b4dac604f3c58cfb0b191112e24771b2faeac1a6"
+ 
++[[package]]
++name = "png"
++version = "0.17.16"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "82151a2fc869e011c153adc57cf2789ccb8d9906ce52c0b39a6b5697749d7526"
++dependencies = [
++ "bitflags 1.3.2",
++ "crc32fast",
++ "fdeflate",
++ "flate2",
++ "miniz_oxide",
++]
++
+ [[package]]
+ name = "png"
+ version = "0.18.1"
+@@ -2724,6 +2833,15 @@ version = "0.1.29"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "e0c5ccf5294c6ccd63a74f1565028353830a9c2f5eb0c682c355c471726a6e3f"
+ 
++[[package]]
++name = "quick-xml"
++version = "0.30.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "eff6510e86862b57b210fd8cbe8ed3f0d7d600b9c2863cd4549a2e033c66e956"
++dependencies = [
++ "memchr",
++]
++
+ [[package]]
+ name = "quick-xml"
+ version = "0.39.4"
+@@ -2963,6 +3081,23 @@ version = "1.2.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
+ 
++[[package]]
++name = "screenshots"
++version = "0.5.4"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "436a9fd3ae9c4fb426ceb884a087c39e4b451c7ee2f339a1ea3a66121534b41b"
++dependencies = [
++ "anyhow",
++ "core-graphics 0.22.3",
++ "dbus",
++ "display-info",
++ "fxhash",
++ "png 0.17.16",
++ "widestring",
++ "windows 0.48.0",
++ "xcb",
++]
++
+ [[package]]
+ name = "scrypt"
+ version = "0.11.0"
+@@ -3651,7 +3786,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "9c324a910fd86ebdc364a3e61ec1f11737d3b1d6c273c0239ee8ff4bc0d24b4a"
+ dependencies = [
+  "proc-macro2",
+- "quick-xml",
++ "quick-xml 0.39.4",
+  "quote",
+ ]
+ 
+@@ -3841,6 +3976,15 @@ version = "0.4.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
+ 
++[[package]]
++name = "windows"
++version = "0.48.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "e686886bc078bc1b0b600cac0147aadb815089b6e4da64016cbd754b6342700f"
++dependencies = [
++ "windows-targets 0.48.5",
++]
++
+ [[package]]
+ name = "windows"
+ version = "0.52.0"
+@@ -3902,6 +4046,21 @@ dependencies = [
+  "windows-link",
+ ]
+ 
++[[package]]
++name = "windows-targets"
++version = "0.48.5"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "9a2fa6e2155d7247be68c096456083145c183cbbbc2764150dda45a87197940c"
++dependencies = [
++ "windows_aarch64_gnullvm 0.48.5",
++ "windows_aarch64_msvc 0.48.5",
++ "windows_i686_gnu 0.48.5",
++ "windows_i686_msvc 0.48.5",
++ "windows_x86_64_gnu 0.48.5",
++ "windows_x86_64_gnullvm 0.48.5",
++ "windows_x86_64_msvc 0.48.5",
++]
++
+ [[package]]
+ name = "windows-targets"
+ version = "0.52.6"
+@@ -3935,6 +4094,12 @@ dependencies = [
+  "windows_x86_64_msvc 0.53.1",
+ ]
+ 
++[[package]]
++name = "windows_aarch64_gnullvm"
++version = "0.48.5"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "2b38e32f0abccf9987a4e3079dfb67dcd799fb61361e53e2882c3cbaf0d905d8"
++
+ [[package]]
+ name = "windows_aarch64_gnullvm"
+ version = "0.52.6"
+@@ -3947,6 +4112,12 @@ version = "0.53.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "a9d8416fa8b42f5c947f8482c43e7d89e73a173cead56d044f6a56104a6d1b53"
+ 
++[[package]]
++name = "windows_aarch64_msvc"
++version = "0.48.5"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "dc35310971f3b2dbbf3f0690a219f40e2d9afcf64f9ab7cc1be722937c26b4bc"
++
+ [[package]]
+ name = "windows_aarch64_msvc"
+ version = "0.52.6"
+@@ -3959,6 +4130,12 @@ version = "0.53.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "b9d782e804c2f632e395708e99a94275910eb9100b2114651e04744e9b125006"
+ 
++[[package]]
++name = "windows_i686_gnu"
++version = "0.48.5"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "a75915e7def60c94dcef72200b9a8e58e5091744960da64ec734a6c6e9b3743e"
++
+ [[package]]
+ name = "windows_i686_gnu"
+ version = "0.52.6"
+@@ -3983,6 +4160,12 @@ version = "0.53.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "fa7359d10048f68ab8b09fa71c3daccfb0e9b559aed648a8f95469c27057180c"
+ 
++[[package]]
++name = "windows_i686_msvc"
++version = "0.48.5"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "8f55c233f70c4b27f66c523580f78f1004e8b5a8b659e05a4eb49d4166cca406"
++
+ [[package]]
+ name = "windows_i686_msvc"
+ version = "0.52.6"
+@@ -3995,6 +4178,12 @@ version = "0.53.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "1e7ac75179f18232fe9c285163565a57ef8d3c89254a30685b57d83a38d326c2"
+ 
++[[package]]
++name = "windows_x86_64_gnu"
++version = "0.48.5"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "53d40abd2583d23e4718fddf1ebec84dbff8381c07cae67ff7768bbf19c6718e"
++
+ [[package]]
+ name = "windows_x86_64_gnu"
+ version = "0.52.6"
+@@ -4007,6 +4196,12 @@ version = "0.53.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "9c3842cdd74a865a8066ab39c8a7a473c0778a3f29370b5fd6b4b9aa7df4a499"
+ 
++[[package]]
++name = "windows_x86_64_gnullvm"
++version = "0.48.5"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "0b7b52767868a23d5bab768e390dc5f5c55825b6d30b86c844ff2dc7414044cc"
++
+ [[package]]
+ name = "windows_x86_64_gnullvm"
+ version = "0.52.6"
+@@ -4019,6 +4214,12 @@ version = "0.53.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "0ffa179e2d07eee8ad8f57493436566c7cc30ac536a3379fdf008f47f6bb7ae1"
+ 
++[[package]]
++name = "windows_x86_64_msvc"
++version = "0.48.5"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "ed94fce61571a4006852b7389a063ab983c02eb1bb37b47f8272ce92d06d9538"
++
+ [[package]]
+ name = "windows_x86_64_msvc"
+ version = "0.52.6"
+@@ -4047,7 +4248,7 @@ dependencies = [
+  "cfg_aliases 0.2.1",
+  "concurrent-queue",
+  "core-foundation 0.9.4",
+- "core-graphics",
++ "core-graphics 0.23.2",
+  "cursor-icon",
+  "dpi",
+  "js-sys",
+@@ -4135,6 +4336,17 @@ version = "0.13.2"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "ea6fc2961e4ef194dcbfe56bb845534d0dc8098940c7e5c012a258bfec6701bd"
+ 
++[[package]]
++name = "xcb"
++version = "1.7.0"
++source = "registry+https://github.com/rust-lang/crates.io-index"
++checksum = "ee4c580d8205abb0a5cf4eb7e927bd664e425b6c3263f9c5310583da96970cf6"
++dependencies = [
++ "bitflags 1.3.2",
++ "libc",
++ "quick-xml 0.30.0",
++]
++
+ [[package]]
+ name = "xcursor"
+ version = "0.3.10"
+diff --git a/Cargo.toml b/Cargo.toml
+index 05eaeae..0edcb9d 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -14,6 +14,7 @@ members = [
+     "crates/keyroost-openpgp",
+     "crates/keyroost-piv",
+     "crates/keyroost-token2otp",
++    "crates/keyroost-token2prog",
+     "crates/keyroost-rsakey",
+     "crates/keyroost-qr",
+     "crates/keyroost-import",
+diff --git a/crates/keyroost-keyring/src/lib.rs b/crates/keyroost-keyring/src/lib.rs
+index 5a60de0..70e3efd 100644
+--- a/crates/keyroost-keyring/src/lib.rs
++++ b/crates/keyroost-keyring/src/lib.rs
+@@ -157,11 +157,15 @@ impl std::error::Error for ResolveError {}
+ 
+ /// Validate a friendly name: 1-64 chars of lowercase ASCII, digits, `-`, `_`.
+ pub fn validate_name(name: &str) -> Result<(), KeyringError> {
+-    let ok = !name.is_empty()
+-        && name.len() <= 64
+-        && name
+-            .chars()
+-            .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-' || c == '_');
++    // A friendly name is a human-facing label, so allow normal text — letters
++    // (any case, any script), digits, spaces and common punctuation. The only
++    // hard rules are: non-empty, a sane length cap, and none of the control /
++    // zero-width / bidi-override characters that strip_control_chars guards
++    // against (those enable display spoofing in a saved name).
++    let trimmed = name.trim();
++    let ok = !trimmed.is_empty()
++        && name.chars().count() <= 64
++        && !name.chars().any(is_spoofing_char);
+     if ok {
+         Ok(())
+     } else {
+@@ -179,41 +183,71 @@ pub fn validate_name(name: &str) -> Result<(), KeyringError> {
+ /// Unicode format characters used for display spoofing (`char::is_control`
+ /// covers only Cc): bidi overrides/isolates (RLO can render "key-live" out
+ /// of "evil-yek"), zero-width chars, BOM, and the soft/Arabic-letter marks.
++/// Control, zero-width, and bidi-override characters that enable display
++/// spoofing in a saved name. Shared by validation and sanitization.
++fn is_spoofing_char(c: char) -> bool {
++    c.is_control()
++        || matches!(c,
++            '\u{200B}'..='\u{200F}' // zero-width space/joiners, LRM/RLM
++            | '\u{202A}'..='\u{202E}' // bidi embeddings + LRO/RLO
++            | '\u{2066}'..='\u{2069}' // bidi isolates
++            | '\u{FEFF}' // BOM / ZWNBSP
++            | '\u{00AD}' // soft hyphen
++            | '\u{061C}' // Arabic letter mark
++        )
++}
++
+ fn strip_control_chars(s: &mut String) {
+-    fn spoofing(c: char) -> bool {
+-        c.is_control()
+-            || matches!(c,
+-                '\u{200B}'..='\u{200F}' // zero-width space/joiners, LRM/RLM
+-                | '\u{202A}'..='\u{202E}' // bidi embeddings + LRO/RLO
+-                | '\u{2066}'..='\u{2069}' // bidi isolates
+-                | '\u{FEFF}' // BOM / ZWNBSP
+-                | '\u{00AD}' // soft hyphen
+-                | '\u{061C}' // Arabic letter mark
+-            )
+-    }
+-    if s.chars().any(spoofing) {
+-        s.retain(|c| !spoofing(c));
++    if s.chars().any(is_spoofing_char) {
++        s.retain(|c| !is_spoofing_char(c));
+     }
+ }
+ 
+-/// Default config path: `$XDG_CONFIG_HOME/keyroost/keys.json`, else
+-/// `$HOME/.config/keyroost/keys.json`.
++/// Default config path for `keys.json`.
++///
++/// * Windows: `%APPDATA%\keyroost\keys.json` (falling back to
++///   `%USERPROFILE%\.config\keyroost\keys.json`).
++/// * Otherwise: `$XDG_CONFIG_HOME/keyroost/keys.json`, else
++///   `$HOME/.config/keyroost/keys.json`.
+ pub fn config_path() -> Option<PathBuf> {
+-    if let Some(xdg) = std::env::var_os("XDG_CONFIG_HOME") {
+-        if !xdg.is_empty() {
+-            return Some(PathBuf::from(xdg).join("keyroost").join("keys.json"));
++    // Windows has no HOME/XDG by default; use the standard roaming AppData dir.
++    #[cfg(windows)]
++    {
++        if let Some(appdata) = std::env::var_os("APPDATA") {
++            if !appdata.is_empty() {
++                return Some(PathBuf::from(appdata).join("keyroost").join("keys.json"));
++            }
++        }
++        if let Some(profile) = std::env::var_os("USERPROFILE") {
++            if !profile.is_empty() {
++                return Some(
++                    PathBuf::from(profile)
++                        .join(".config")
++                        .join("keyroost")
++                        .join("keys.json"),
++                );
++            }
+         }
+-    }
+-    let home = std::env::var_os("HOME")?;
+-    if home.is_empty() {
+         return None;
+     }
+-    Some(
+-        PathBuf::from(home)
+-            .join(".config")
+-            .join("keyroost")
+-            .join("keys.json"),
+-    )
++    #[cfg(not(windows))]
++    {
++        if let Some(xdg) = std::env::var_os("XDG_CONFIG_HOME") {
++            if !xdg.is_empty() {
++                return Some(PathBuf::from(xdg).join("keyroost").join("keys.json"));
++            }
++        }
++        let home = std::env::var_os("HOME")?;
++        if home.is_empty() {
++            return None;
++        }
++        Some(
++            PathBuf::from(home)
++                .join(".config")
++                .join("keyroost")
++                .join("keys.json"),
++        )
++    }
+ }
+ 
+ impl Keyring {
+@@ -400,11 +434,22 @@ mod tests {
+ 
+     #[test]
+     fn name_validation() {
++        // Normal human-facing labels are accepted: any case, spaces, scripts.
+         assert!(validate_name("signing-yubikey").is_ok());
+         assert!(validate_name("test_solo2").is_ok());
++        assert!(validate_name("Emin's Work Key").is_ok());
++        assert!(validate_name("UPPER").is_ok());
++        assert!(validate_name("Bad Name").is_ok());
++        assert!(validate_name("Clé de bureau").is_ok());
++        // Empty (or whitespace-only) is still rejected.
+         assert!(validate_name("").is_err());
+-        assert!(validate_name("Bad Name").is_err());
+-        assert!(validate_name("UPPER").is_err());
++        assert!(validate_name("   ").is_err());
++        // Over the length cap is rejected.
++        assert!(validate_name(&"x".repeat(65)).is_err());
++        // Control / zero-width / bidi-override characters are still rejected.
++        assert!(validate_name("bad\u{202E}name").is_err());
++        assert!(validate_name("zero\u{200B}width").is_err());
++        assert!(validate_name("tab\tname").is_err());
+     }
+ 
+     #[test]
+diff --git a/crates/keyroost-resolve/Cargo.toml b/crates/keyroost-resolve/Cargo.toml
+index c167f12..db64baa 100644
+--- a/crates/keyroost-resolve/Cargo.toml
++++ b/crates/keyroost-resolve/Cargo.toml
+@@ -14,4 +14,5 @@ workspace = true
+ keyroost-keyring = { path = "../keyroost-keyring", version = "0.7.1" }
+ keyroost-hid = { path = "../keyroost-hid", version = "0.7.1" }
+ keyroost-transport = { path = "../keyroost-transport", version = "0.7.1" }
++keyroost-token2prog = { path = "../keyroost-token2prog", version = "0.7.1" }
+ keyroost-proto = { path = "../keyroost-proto", version = "0.7.1" }
+diff --git a/crates/keyroost-resolve/src/device.rs b/crates/keyroost-resolve/src/device.rs
+index 2d4d03a..1e00e53 100644
+--- a/crates/keyroost-resolve/src/device.rs
++++ b/crates/keyroost-resolve/src/device.rs
+@@ -20,6 +20,7 @@ impl Caps {
+     pub const PIV: Caps = Caps(1 << 3);
+     pub const TOTP: Caps = Caps(1 << 4); // Molto2 programmable token
+     pub const OTP: Caps = Caps(1 << 5); // Token2 FIDO key on-device OTP applet
++    pub const PROG: Caps = Caps(1 << 6); // Token2 single-profile programmable token
+ 
+     pub fn has(self, c: Caps) -> bool {
+         self.0 & c.0 != 0
+@@ -32,12 +33,14 @@ impl Caps {
+     }
+ }
+ 
+-/// What kind of physical device this is. `Token` is the Molto2 family; everything
+-/// else is a `Key`.
++/// What kind of physical device this is. `Token` is the Molto2 family;
++/// `ProgToken` is the single-profile programmable token; everything else is a
++/// `Key`.
+ #[derive(Clone, Copy, Debug, PartialEq, Eq)]
+ pub enum DeviceKind {
+     Key,
+     Token,
++    ProgToken,
+ }
+ 
+ /// A stable identity for a device across refreshes (effective serial, else reader
+@@ -215,6 +218,30 @@ pub fn correlate(hids: &[HidDevice], probes: &[ReaderProbe], keyring: &Keyring)
+         });
+     }
+ 
++    // --- 1b. Single-profile programmable tokens — flagged by their info
++    // response during the probe (no applet, no distinctive reader name).
++    for p in probes.iter().filter(|p| p.is_prog) {
++        let serial = p.prog_serial.clone().unwrap_or_default();
++        let model = keyroost_token2prog::model_for_serial(&serial)
++            .unwrap_or("Programmable token")
++            .to_string();
++        let mut caps = Caps::default();
++        caps.insert(Caps::PROG);
++        devices.push(Device {
++            id: format!("prog:{}", p.reader_name),
++            name: keyring.name_for(Some(&serial)).map(str::to_owned),
++            vendor: "Token2".into(),
++            model,
++            serial,
++            transport: "NFC · PC/SC".into(),
++            firmware: String::new(),
++            caps,
++            kind: DeviceKind::ProgToken,
++            hid_path: None,
++            reader: Some(p.reader_name.clone()),
++        });
++    }
++
+     // --- 2. Smart-card keys, one per non-Molto reader that answers an applet.
+     for p in probes.iter().filter(|p| !p.is_molto2) {
+         let mut caps = Caps::default();
+@@ -426,6 +453,8 @@ mod tests {
+             has_piv: piv,
+             has_fido: false,
+             has_otp: false,
++            is_prog: false,
++            prog_serial: None,
+             yubikey_serial: yk_serial.map(str::to_owned),
+             usb_bus: bus,
+             usb_address: addr,
+diff --git a/crates/keyroost-token2otp/src/lib.rs b/crates/keyroost-token2otp/src/lib.rs
+index 85d75d9..2d317d8 100644
+--- a/crates/keyroost-token2otp/src/lib.rs
++++ b/crates/keyroost-token2otp/src/lib.rs
+@@ -171,9 +171,19 @@ pub fn build_apdu(header: [u8; 4], data: &[u8]) -> Vec<u8> {
+     let mut out = Vec::with_capacity(7 + len);
+     out.extend_from_slice(&header);
+     if len > 0 {
+-        out.push(0x00);
+-        out.push((len >> 8) as u8);
+-        out.push((len & 0xFF) as u8);
++        if len <= 0xFF {
++            // Short-form Lc (single byte). Required for T=0 contact readers,
++            // which reject the extended (3-byte `00 hi lo`) form with 6700
++            // ("wrong length"); short form is equally valid over T=CL (NFC) and
++            // USB-HID, so it's the safe universal encoding. Every OTP command
++            // body fits well under 255 bytes (seeds, timestamps, flags).
++            out.push(len as u8);
++        } else {
++            // Extended Lc for the (unused in practice) >255-byte case.
++            out.push(0x00);
++            out.push((len >> 8) as u8);
++            out.push((len & 0xFF) as u8);
++        }
+         out.extend_from_slice(data);
+     }
+     // erase-all (WRITE_SEED with empty data) sends no Lc/Le at all — just the
+@@ -509,8 +519,9 @@ mod tests {
+     }
+ 
+     #[test]
+-    fn extended_apdu_layout() {
+-        // ENUM_CODES READ_ALL at t=0 (spec §10.1 host frame).
++    fn enum_codes_apdu_layout() {
++        // ENUM_CODES READ_ALL at t=0 (spec §10.1 host frame). A 9-byte body uses
++        // short-form Lc (single 0x09), the encoding T=0 contact readers accept.
+         let mut data = vec![cmd::SUB_READ_ALL];
+         data.extend_from_slice(&0u64.to_be_bytes());
+         let apdu = build_apdu(cmd::ENUM_CODES, &data);
+@@ -518,7 +529,7 @@ mod tests {
+             apdu,
+             vec![
+                 0x80, 0xC5, 0x05, 0x00, // header
+-                0x00, 0x00, 0x09, // extended Lc = 9
++                0x09, // short Lc = 9
+                 0x03, // READ_ALL
+                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // u64 ts = 0
+             ]
+@@ -562,9 +573,10 @@ mod tests {
+             Err(SetDeviceTypeError::WouldBrick)
+         );
+         // disabling just the keyboard leaves FIDO+CCID — allowed (spec §6.8 example).
++        // Short-form Lc (single 0x01) for the 1-byte mask body.
+         assert_eq!(
+             set_device_type(DEV_KEYBOARD).unwrap(),
+-            vec![0x80, 0xC5, 0x02, 0x01, 0x00, 0x00, 0x01, 0x02]
++            vec![0x80, 0xC5, 0x02, 0x01, 0x01, 0x02]
+         );
+     }
+ 
+diff --git a/crates/keyroost-token2prog/Cargo.toml b/crates/keyroost-token2prog/Cargo.toml
+new file mode 100644
+index 0000000..6035350
+--- /dev/null
++++ b/crates/keyroost-token2prog/Cargo.toml
+@@ -0,0 +1,20 @@
++[package]
++name = "keyroost-token2prog"
++version.workspace = true
++edition.workspace = true
++rust-version.workspace = true
++license.workspace = true
++repository.workspace = true
++description = "Pure-Rust protocol layer for the Token2 2nd-generation single-profile programmable TOTP token (NFC Type-4 / ISO 7816): get-info, SM4 challenge auth, seed and config programming."
++
++[lints]
++workspace = true
++
++[dependencies]
++# Reuse the proven SM4 block cipher, the ISO 9797-1 SM4-CBC MAC, the ISO 7816
++# padding, and the case-3 APDU builder from the Molto2 protocol crate. The
++# single-profile token shares the same crypto primitives; only the command set,
++# the (hardcoded) device key, and a couple of framing details differ.
++keyroost-proto = { path = "../keyroost-proto", version = "0.7.1" }
++
++[dev-dependencies]
+diff --git a/crates/keyroost-token2prog/src/commands.rs b/crates/keyroost-token2prog/src/commands.rs
+new file mode 100644
+index 0000000..10a4faa
+--- /dev/null
++++ b/crates/keyroost-token2prog/src/commands.rs
+@@ -0,0 +1,335 @@
++//! Command builders for the Token2 2nd-generation **single-profile**
++//! programmable TOTP token (internally "OTPC P2").
++//!
++//! This is a close cousin of the multi-profile Molto2 (see [`keyroost_proto`]):
++//! same NFC Type-4 / ISO 7816 transport, same SM4 block cipher, same ISO 9797-1
++//! SM4-CBC MAC. It differs in a few concrete ways, all encoded here:
++//!
++//! * **One fixed profile.** There is no profile selector byte; every command
++//!   targets the single slot.
++//! * **A fixed device key.** Where the Molto2 derives its SM4 key from a
++//!   customer key (`SHA1(customer_key)[..16]`), this token uses a fixed 16-byte
++//!   key baked into the vendor tool. It is hardcoded here as
++//!   [`DEVICE_SM4_KEY`]; no per-device or user-supplied key is involved.
++//! * **`get_info` carries data.** The info request sends a two-byte body
++//!   (`02 11`) rather than a bare `Le`.
++//! * **Two seed-length forms.** A 20-byte seed and a 32-byte seed are framed and
++//!   padded differently (see [`set_seed`]).
++//!
++//! Every builder returns the raw APDU bytes plus a short label; transmission and
++//! response parsing live in the transport layer, keeping this crate hardware-
++//! free and unit-testable. Crypto primitives (`Sm4`, the MAC, ISO 7816 padding)
++//! are reused from `keyroost_proto` rather than re-implemented.
++
++use keyroost_proto::apdu::{build_apdu, mac, CLA_PLAIN, CLA_SECURE};
++use keyroost_proto::sm4::Sm4;
++
++/// The fixed 16-byte SM4 key this token family authenticates and encrypts with.
++///
++/// This token uses a single fixed device key (`8A D2 06 88 3C A3 69 48 2A B2 71
++/// 82 B6 E8 32 24`) rather than a per-device or customer-supplied secret, so it
++/// is embedded directly.
++pub const DEVICE_SM4_KEY: [u8; 16] = [
++    0x8A, 0xD2, 0x06, 0x88, 0x3C, 0xA3, 0x69, 0x48, 0x2A, 0xB2, 0x71, 0x82, 0xB6, 0xE8, 0x32, 0x24,
++];
++
++/// HMAC algorithm for OTP generation.
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum HmacAlgo {
++    Sha1 = 1,
++    Sha256 = 2,
++}
++
++/// OTP time step (validity window).
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum TimeStep {
++    /// 30 seconds — wire byte `0x1E`.
++    Seconds30,
++    /// 60 seconds — wire byte `0x3C`.
++    Seconds60,
++}
++
++impl TimeStep {
++    fn wire(self) -> u8 {
++        match self {
++            // The high two bits flag seconds (b00) vs minutes (b01); the low six
++            // carry the count. 30 and 60 both fit the seconds form.
++            TimeStep::Seconds30 => 0x1E,
++            TimeStep::Seconds60 => 0x3C,
++        }
++    }
++}
++
++/// How long the display stays on before sleeping.
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum DisplayTimeout {
++    Sec15 = 0,
++    Sec30 = 1,
++    Sec60 = 2,
++    Sec120 = 3,
++}
++
++/// The full configuration written in one `set_config` command.
++#[derive(Debug, Clone, Copy)]
++pub struct Config {
++    pub display_timeout: DisplayTimeout,
++    pub algorithm: HmacAlgo,
++    pub time_step: TimeStep,
++    /// Unix epoch seconds used to set the device clock.
++    pub utc_time: u32,
++}
++
++/// An APDU ready to transmit, plus a short human label for logs/UI.
++#[derive(Debug, Clone)]
++pub struct Command {
++    pub label: &'static str,
++    pub apdu: Vec<u8>,
++}
++
++/// `80 41 00 00 02 02 11` — read serial and on-device UTC time. No auth needed.
++///
++/// Unlike the Molto2's bare-`Le` info request, this token expects a two-byte
++/// body `02 11`.
++pub fn get_info() -> Command {
++    Command {
++        label: "get info (serial + time)",
++        apdu: build_apdu(CLA_PLAIN, 0x41, 0x00, 0x00, &[0x02, 0x11]),
++    }
++}
++
++/// `80 4B 08 00 01 00` — request the 8-byte authentication challenge.
++pub fn get_challenge() -> Command {
++    Command {
++        label: "get challenge",
++        apdu: build_apdu(CLA_PLAIN, 0x4B, 0x08, 0x00, &[0x00]),
++    }
++}
++
++/// `80 CE 00 00 10 <SM4(challenge ‖ 8 zero bytes)>` — answer the challenge.
++///
++/// The 8-byte `challenge` from [`get_challenge`] is "inflated" to a 16-byte
++/// block by appending eight zero bytes, then SM4-encrypted under
++/// [`DEVICE_SM4_KEY`]. The device replies `9000` on success or `6983` if the
++/// key is locked.
++pub fn answer_challenge(challenge: &[u8; 8]) -> Command {
++    let mut block = [0u8; 16];
++    block[..8].copy_from_slice(challenge);
++    Sm4::new(&DEVICE_SM4_KEY).encrypt_block(&mut block);
++    Command {
++        label: "answer challenge",
++        apdu: build_apdu(CLA_PLAIN, 0xCE, 0x00, 0x00, &block),
++    }
++}
++
++/// Normalize a TOTP secret to the device's stored length.
++///
++/// The vendor tool pads a decoded secret shorter than 20 bytes up to 20 bytes
++/// with trailing zero bytes before programming it. An authenticator app set up
++/// from the same base32 secret uses those same bytes, so the device's codes only
++/// match when keyroost stores the identical zero-padded seed. Secrets that are
++/// already 20 bytes or longer are returned unchanged (the device also accepts
++/// 32-byte seeds via the longer-seed framing in [`set_seed`]).
++pub fn pad_totp_seed(mut seed: Vec<u8>) -> Vec<u8> {
++    if seed.len() < 20 {
++        seed.resize(20, 0);
++    }
++    seed
++}
++
++/// `84 C5 01 00 Lc <SM4(seed_padded) ‖ mac>` — program the OTP seed.
++///
++/// `seed` is the raw key bytes (1..=63). Two on-wire forms exist, matching the
++/// vendor tool:
++///
++/// * **≤ 16-byte effective / general case:** the seed is ISO 9797-1 padded to a
++///   block boundary, SM4-ECB encrypted, and MAC'd with the plain header
++///   `80 C5 01 00 <enc_len>`.
++/// * **Exactly 32 bytes:** an extra full pad block is appended (`0x80` followed
++///   by fifteen `0x00`) before encryption — a 48-byte ciphertext — reflecting
++///   the device's longer-seed framing.
++///
++/// In both cases the wire APDU uses the secure class `0x84`, while the MAC is
++/// computed over the plain class `0x80` with the *encrypted-payload* length.
++pub fn set_seed(seed: &[u8]) -> Result<Command, SeedError> {
++    if seed.is_empty() || seed.len() > 63 {
++        return Err(SeedError::Length(seed.len()));
++    }
++
++    let key = Sm4::new(&DEVICE_SM4_KEY);
++
++    let enc: Vec<u8> = if seed.len() == 32 {
++        // Longer-seed form: 32 bytes + a full 16-byte 0x80-pad block = 48 bytes.
++        let mut padded = Vec::with_capacity(48);
++        padded.extend_from_slice(seed);
++        padded.push(0x80);
++        padded.extend_from_slice(&[0u8; 15]);
++        key.encrypt_ecb(&mut padded);
++        padded
++    } else {
++        // General form: ISO 9797-1 minimal pad to a block boundary, then ECB.
++        let mut padded = keyroost_proto::apdu::pad_iso7816_minimal(seed);
++        key.encrypt_ecb(&mut padded);
++        padded
++    };
++
++    let enc_len = enc.len() as u8;
++    let mac_bytes = mac(&DEVICE_SM4_KEY, &[CLA_PLAIN, 0xC5, 0x01, 0x00, enc_len], &enc);
++
++    let mut body = enc;
++    body.extend_from_slice(&mac_bytes);
++
++    Ok(Command {
++        label: "set seed",
++        apdu: build_apdu(CLA_SECURE, 0xC5, 0x01, 0x00, &body),
++    })
++}
++
++/// `84 D4 00 00 Lc <TLV ‖ mac>` — write the device configuration.
++///
++/// The 19-byte TLV body sets the display timeout, the device clock, and the
++/// TOTP parameters (HMAC algorithm and time step). As with [`set_seed`], the
++/// MAC is computed over the plain header `80 D4 00 00 13` (length `0x13` = 19),
++/// while the transmitted APDU uses the secure class `0x84`.
++pub fn set_config(cfg: &Config) -> Command {
++    let mut tlv = Vec::with_capacity(19);
++    // 81 11 — TLV_TAG_SYS_CONFG, 0x11 (17) bytes of children follow.
++    tlv.push(0x81);
++    tlv.push(0x11);
++    // 1F 01 <display_timeout>
++    tlv.push(0x1F);
++    tlv.push(0x01);
++    tlv.push(cfg.display_timeout as u8);
++    // 0F 04 <utc_time, big-endian>
++    tlv.push(0x0F);
++    tlv.push(0x04);
++    tlv.extend_from_slice(&cfg.utc_time.to_be_bytes());
++    // 86 06 — TLV_TAG_TOTP_PARAM, 6 bytes of children.
++    tlv.push(0x86);
++    tlv.push(0x06);
++    // 0A 01 <hmac_method>
++    tlv.push(0x0A);
++    tlv.push(0x01);
++    tlv.push(cfg.algorithm as u8);
++    // 0D 01 <time_step>
++    tlv.push(0x0D);
++    tlv.push(0x01);
++    tlv.push(cfg.time_step.wire());
++
++    debug_assert_eq!(tlv.len(), 19);
++
++    let mac_bytes = mac(
++        &DEVICE_SM4_KEY,
++        &[CLA_PLAIN, 0xD4, 0x00, 0x00, tlv.len() as u8],
++        &tlv,
++    );
++    let mut body = tlv;
++    body.extend_from_slice(&mac_bytes);
++
++    Command {
++        label: "set config",
++        apdu: build_apdu(CLA_SECURE, 0xD4, 0x00, 0x00, &body),
++    }
++}
++
++/// Parsed response of [`get_info`]: the printed serial and the device clock.
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub struct Info {
++    pub serial: String,
++    /// Device UTC clock, Unix epoch seconds.
++    pub utc_time: u32,
++}
++
++impl Info {
++    /// Resolve the human model name from the serial, if recognized.
++    /// See [`model_for_serial`].
++    pub fn model(&self) -> Option<&'static str> {
++        model_for_serial(&self.serial)
++    }
++}
++
++/// Map a device serial to its Token2 model name by leading-digit prefix.
++///
++/// Token2 encodes the product in the first digits of the printed serial. The
++/// table below is matched longest-prefix-first, so a 7-digit prefix wins over a
++/// 6-digit one even though the current set has no overlap. Returns `None` for an
++/// unrecognized serial (e.g. a future product) so callers can fall back to
++/// showing the raw serial.
++pub fn model_for_serial(serial: &str) -> Option<&'static str> {
++    // (serial prefix, model name). Kept sorted by descending prefix length at
++    // match time; the source order here is for readability.
++    const MODELS: &[(&str, &str)] = &[
++        ("8659612", "OTPC-P1-i"),
++        ("8659622", "OTPC-P2-i"),
++        ("8659621", "OTPC-P2-i-NB"),
++        ("8659600", "miniOTP-2-i"),
++        ("8659601", "miniOTP-3-i"),
++        ("8659609", "miniOTP-3-i-NB"),
++        ("8659610", "C301-i"),
++        ("8659632", "C302-i"),
++    ];
++    // Trim any surrounding whitespace the device might pad the serial with.
++    let s = serial.trim();
++    MODELS
++        .iter()
++        .filter(|(prefix, _)| s.starts_with(prefix))
++        // Longest matching prefix wins (defensive against future overlaps).
++        .max_by_key(|(prefix, _)| prefix.len())
++        .map(|(_, model)| *model)
++}
++
++/// Errors decoding a `get_info` response.
++#[derive(Debug, Clone, PartialEq, Eq)]
++pub enum InfoError {
++    /// The response was shorter than the framing requires.
++    Truncated,
++    /// The serial field was not valid UTF-8.
++    SerialNotUtf8,
++}
++
++/// Decode the body of a [`get_info`] response (status word already stripped).
++///
++/// Layout (from the device): `?? ?? ?? <serial_len> <serial…> ?? ?? <time:4>`,
++/// i.e. the serial length is at offset 3, the serial follows, and a 4-byte
++/// big-endian Unix time sits two bytes after the serial.
++pub fn parse_info(body: &[u8]) -> Result<Info, InfoError> {
++    if body.len() < 4 {
++        return Err(InfoError::Truncated);
++    }
++    let serial_len = body[3] as usize;
++    let serial_start = 4;
++    let serial_end = serial_start + serial_len;
++    let time_start = serial_end + 2;
++    let time_end = time_start + 4;
++    if body.len() < time_end {
++        return Err(InfoError::Truncated);
++    }
++    let serial =
++        core::str::from_utf8(&body[serial_start..serial_end]).map_err(|_| InfoError::SerialNotUtf8)?;
++    let utc_time = u32::from_be_bytes([
++        body[time_start],
++        body[time_start + 1],
++        body[time_start + 2],
++        body[time_start + 3],
++    ]);
++    Ok(Info {
++        serial: serial.to_string(),
++        utc_time,
++    })
++}
++
++/// Errors building a seed command.
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
++pub enum SeedError {
++    /// Seed length must be 1..=63 bytes; carries the offending length.
++    Length(usize),
++}
++
++impl core::fmt::Display for SeedError {
++    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
++        match self {
++            SeedError::Length(n) => write!(f, "seed length {n} out of range (must be 1..=63 bytes)"),
++        }
++    }
++}
++
++impl std::error::Error for SeedError {}
+diff --git a/crates/keyroost-token2prog/src/lib.rs b/crates/keyroost-token2prog/src/lib.rs
+new file mode 100644
+index 0000000..2a317d2
+--- /dev/null
++++ b/crates/keyroost-token2prog/src/lib.rs
+@@ -0,0 +1,175 @@
++//! Pure-Rust protocol layer for the **Token2 2nd-generation single-profile
++//! programmable TOTP token** (NFC Type-4 / ISO 7816).
++//!
++//! This crate builds the APDUs for the four operations the token supports —
++//! read info, authenticate, program the seed, and program the configuration —
++//! and parses the info response. It performs no I/O; the transport layer sends
++//! the APDUs over PC/SC. Crypto (SM4, the SM4-CBC MAC, ISO 7816 padding) is
++//! reused from [`keyroost_proto`].
++//!
++//! See `commands` for the per-command details and the wire format.
++
++pub mod commands;
++
++pub use commands::{
++    answer_challenge, get_challenge, get_info, model_for_serial, pad_totp_seed, parse_info,
++    set_config, set_seed, Command, Config, DisplayTimeout, HmacAlgo, Info, InfoError, SeedError,
++    TimeStep, DEVICE_SM4_KEY,
++};
++
++#[cfg(test)]
++mod tests {
++    use super::commands::*;
++
++    // All expected values below were produced by the vendor reference tool's
++    // exact crypto path (the `sm4` Python package, validated against the GM/T
++    // 0002 SM4 known-answer test) using this token family's device key.
++
++    #[test]
++    fn device_key_is_the_decrypted_constant() {
++        assert_eq!(
++            DEVICE_SM4_KEY,
++            [
++                0x8A, 0xD2, 0x06, 0x88, 0x3C, 0xA3, 0x69, 0x48, 0x2A, 0xB2, 0x71, 0x82, 0xB6, 0xE8,
++                0x32, 0x24
++            ]
++        );
++    }
++
++    #[test]
++    fn get_info_apdu_form() {
++        // 80 41 00 00 02 02 11
++        assert_eq!(get_info().apdu, vec![0x80, 0x41, 0x00, 0x00, 0x02, 0x02, 0x11]);
++    }
++
++    #[test]
++    fn get_challenge_apdu_form() {
++        // 80 4B 08 00 01 00
++        assert_eq!(get_challenge().apdu, vec![0x80, 0x4B, 0x08, 0x00, 0x01, 0x00]);
++    }
++
++    #[test]
++    fn answer_challenge_matches_reference() {
++        // challenge 11 22 33 44 55 66 77 88, inflated to 16 bytes with eight
++        // trailing zeros, SM4-encrypted under the device key. Reference value
++        // from the vendor crypto path.
++        let cmd = answer_challenge(&[0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88]);
++        // 80 CE 00 00 10 <16-byte response>
++        assert_eq!(cmd.apdu[..5], [0x80, 0xCE, 0x00, 0x00, 0x10]);
++        assert_eq!(
++            &cmd.apdu[5..],
++            &[
++                0x8B, 0x74, 0x50, 0xF2, 0x27, 0x21, 0xBC, 0x29, 0x98, 0x5C, 0x2C, 0x46, 0x0B, 0x65,
++                0x04, 0x5D
++            ]
++        );
++    }
++
++    #[test]
++    fn set_seed_rejects_bad_length() {
++        assert_eq!(set_seed(&[]).unwrap_err(), SeedError::Length(0));
++        assert_eq!(set_seed(&[0u8; 64]).unwrap_err(), SeedError::Length(64));
++    }
++
++    #[test]
++    fn set_seed_20_byte_form() {
++        // A 20-byte seed pads to 32 bytes (two blocks) before ECB; the wire APDU
++        // is secure-class 0x84, body = 32-byte ciphertext + 4-byte MAC = 36
++        // bytes, so Lc = 0x24.
++        let seed = [0xABu8; 20];
++        let cmd = set_seed(&seed).unwrap();
++        assert_eq!(cmd.apdu[..5], [0x84, 0xC5, 0x01, 0x00, 0x24]);
++        assert_eq!(cmd.apdu.len(), 5 + 0x24);
++    }
++
++    #[test]
++    fn set_seed_32_byte_form() {
++        // A 32-byte seed gets an extra full pad block: 48-byte ciphertext + 4
++        // MAC = 52 = 0x34.
++        let seed = [0xCDu8; 32];
++        let cmd = set_seed(&seed).unwrap();
++        assert_eq!(cmd.apdu[..5], [0x84, 0xC5, 0x01, 0x00, 0x34]);
++        assert_eq!(cmd.apdu.len(), 5 + 0x34);
++    }
++
++    #[test]
++    fn set_config_tlv_layout() {
++        let cmd = set_config(&Config {
++            display_timeout: DisplayTimeout::Sec30,
++            algorithm: HmacAlgo::Sha1,
++            time_step: TimeStep::Seconds30,
++            utc_time: 0,
++        });
++        // Secure class, 19-byte TLV + 4 MAC = 23 = 0x17.
++        assert_eq!(cmd.apdu[..5], [0x84, 0xD4, 0x00, 0x00, 0x17]);
++        // TLV prefix: 81 11 1F 01 01 (display_timeout = Sec30 = 1) 0F 04 <time>
++        assert_eq!(
++            cmd.apdu[5..15],
++            [0x81, 0x11, 0x1F, 0x01, 0x01, 0x0F, 0x04, 0x00, 0x00, 0x00]
++        );
++        // TOTP param block: 86 06 0A 01 01 (SHA1) 0D 01 1E (30s)
++        assert_eq!(
++            cmd.apdu[15..24],
++            [0x00, 0x86, 0x06, 0x0A, 0x01, 0x01, 0x0D, 0x01, 0x1E]
++        );
++    }
++
++    #[test]
++    fn parse_info_roundtrip() {
++        // serial_len at offset 3, serial "ABC123", two filler bytes, then a
++        // 4-byte big-endian time (0x6543_2100).
++        let mut body = vec![0x00, 0x00, 0x00, 0x06];
++        body.extend_from_slice(b"ABC123");
++        body.extend_from_slice(&[0x00, 0x00]);
++        body.extend_from_slice(&[0x65, 0x43, 0x21, 0x00]);
++        let info = parse_info(&body).unwrap();
++        assert_eq!(info.serial, "ABC123");
++        assert_eq!(info.utc_time, 0x6543_2100);
++    }
++
++    #[test]
++    fn parse_info_truncated() {
++        assert_eq!(parse_info(&[0x00, 0x00]).unwrap_err(), InfoError::Truncated);
++    }
++
++    #[test]
++    fn model_resolution() {
++        // Exact prefixes resolve.
++        assert_eq!(model_for_serial("8659622"), Some("OTPC-P2-i"));
++        assert_eq!(model_for_serial("8659621"), Some("OTPC-P2-i-NB"));
++        assert_eq!(model_for_serial("8659610"), Some("C301-i"));
++        // Non-programmable models are intentionally absent (e.g. C202/C203).
++        assert_eq!(model_for_serial("8659623"), None);
++        assert_eq!(model_for_serial("865971"), None);
++        // A full serial that begins with a prefix resolves too.
++        assert_eq!(model_for_serial("8659622000123"), Some("OTPC-P2-i"));
++        assert_eq!(model_for_serial("8659600999"), Some("miniOTP-2-i"));
++        // Surrounding whitespace is tolerated.
++        assert_eq!(model_for_serial("  8659632  "), Some("C302-i"));
++        // Unknown serial -> None (caller falls back to the raw serial).
++        assert_eq!(model_for_serial("0000000"), None);
++        assert_eq!(model_for_serial(""), None);
++    }
++
++    #[test]
++    fn info_model_accessor() {
++        let info = Info {
++            serial: "8659622000001".to_string(),
++            utc_time: 0,
++        };
++        assert_eq!(info.model(), Some("OTPC-P2-i"));
++    }
++
++    #[test]
++    fn pad_totp_seed_matches_vendor() {
++        // 10-byte secret (e.g. base32 "JBSWY3DPEHPK3PXP") pads to 20 with zeros.
++        let ten = vec![0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21, 0xde, 0xad, 0xbe, 0xef];
++        let padded = pad_totp_seed(ten.clone());
++        assert_eq!(padded.len(), 20);
++        assert_eq!(&padded[..10], &ten[..]);
++        assert_eq!(&padded[10..], &[0u8; 10]);
++        // Already-20 and longer seeds are untouched.
++        assert_eq!(pad_totp_seed(vec![1u8; 20]).len(), 20);
++        assert_eq!(pad_totp_seed(vec![1u8; 32]).len(), 32);
++    }
++}
+diff --git a/crates/keyroost-transport/Cargo.toml b/crates/keyroost-transport/Cargo.toml
+index 49b56ef..5df9d92 100644
+--- a/crates/keyroost-transport/Cargo.toml
++++ b/crates/keyroost-transport/Cargo.toml
+@@ -16,6 +16,7 @@ keyroost-oath = { path = "../keyroost-oath", version = "0.7.1" }
+ keyroost-openpgp = { path = "../keyroost-openpgp", version = "0.7.1" }
+ keyroost-piv = { path = "../keyroost-piv", version = "0.7.1" }
+ keyroost-token2otp = { path = "../keyroost-token2otp", version = "0.7.1" }
++keyroost-token2prog = { path = "../keyroost-token2prog", version = "0.7.1" }
+ keyroost-hid = { path = "../keyroost-hid", version = "0.7.1" }
+ # For the CtapTransport trait — the PC/SC CTAP backend (NFC + contact readers)
+ # implements it so FIDO2 commands can run over a smart-card reader, not just USB-HID.
+diff --git a/crates/keyroost-transport/src/ctap_pcsc.rs b/crates/keyroost-transport/src/ctap_pcsc.rs
+index b6e846d..66e2f80 100644
+--- a/crates/keyroost-transport/src/ctap_pcsc.rs
++++ b/crates/keyroost-transport/src/ctap_pcsc.rs
+@@ -57,11 +57,28 @@ const RECV_BUF: usize = 4096;
+ 
+ /// A FIDO2 authenticator reached over a PC/SC reader (NFC or contact).
+ pub struct CtapPcscDevice {
+-    card: Card,
++    /// `Option` so `Drop` can `take()` the card and disconnect it with
++    /// `LeaveCard` (the `pcsc` default `Drop` resets the card, which disturbs a
++    /// concurrent OTP read on the same contact reader — see the `Drop` impl).
++    card: Option<Card>,
+     /// Applet-select answer (`U2F_V2` / `FIDO_2_0`), retained for diagnostics.
+     selected_version: Vec<u8>,
+ }
+ 
++impl Drop for CtapPcscDevice {
++    fn drop(&mut self) {
++        // The pcsc crate's default Card drop hard-codes Disposition::ResetCard,
++        // which resets the smart card. On a contact reader that reset collides
++        // with any other session on the same card (e.g. the on-device OTP read
++        // that runs right after the FIDO get-info), surfacing as
++        // SCARD_W_RESET_CARD / a comms error. Disconnect with LeaveCard instead
++        // so dropping a FIDO session leaves the card untouched.
++        if let Some(card) = self.card.take() {
++            let _ = card.disconnect(pcsc::Disposition::LeaveCard);
++        }
++    }
++}
++
+ impl CtapPcscDevice {
+     /// Connect to the named reader, select the FIDO applet, and return a ready
+     /// transport. Fails if the reader has no card, or the card has no FIDO
+@@ -75,7 +92,7 @@ impl CtapPcscDevice {
+             .connect(&cname, ShareMode::Shared, Protocols::ANY)
+             .map_err(|e| CtapError::Transport(format!("connect to reader failed: {e}")))?;
+         let mut dev = CtapPcscDevice {
+-            card,
++            card: Some(card),
+             selected_version: Vec::new(),
+         };
+         dev.select_fido_applet()?;
+@@ -92,7 +109,7 @@ impl CtapPcscDevice {
+         let mut apdu = vec![0x00, 0xA4, 0x04, 0x00, FIDO_AID.len() as u8];
+         apdu.extend_from_slice(&FIDO_AID);
+         apdu.push(0x00); // Le
+-        let (data, sw1, sw2) = self.exchange(&apdu)?;
++        let (data, sw1, sw2) = self.exchange_full(&apdu)?;
+         if (sw1, sw2) != (0x90, 0x00) {
+             return Err(CtapError::Transport(format!(
+                 "FIDO applet not present on this card (SELECT -> {sw1:02X}{sw2:02X})"
+@@ -105,8 +122,11 @@ impl CtapPcscDevice {
+     /// One raw APDU exchange. Returns `(response_data, sw1, sw2)`.
+     fn exchange(&mut self, apdu: &[u8]) -> Result<(Vec<u8>, u8, u8), CtapError> {
+         let mut buf = [0u8; RECV_BUF];
+-        let resp = self
++        let card = self
+             .card
++            .as_mut()
++            .ok_or_else(|| CtapError::Transport("card already disconnected".into()))?;
++        let resp = card
+             .transmit(apdu, &mut buf)
+             .map_err(|e| CtapError::Transport(format!("APDU transmit failed: {e}")))?;
+         if resp.len() < 2 {
+@@ -119,6 +139,58 @@ impl CtapPcscDevice {
+         Ok((data.to_vec(), sw[0], sw[1]))
+     }
+ 
++    /// Perform one APDU exchange and then drain any continuation the card
++    /// signals, returning the fully-reassembled response data and the final
++    /// status word.
++    ///
++    /// This is required for **contact (T=0)** readers: where an NFC (T=CL) card
++    /// returns the response body inline with `90 00`, a T=0 card replies `61 XX`
++    /// ("XX more bytes available — issue GET RESPONSE") and only yields the body
++    /// across follow-up `00 C0 00 00 XX` calls. `6C XX` ("wrong Le, retry with
++    /// XX") is handled by re-issuing the original APDU with the suggested length.
++    /// `91 XX` is the NFC keep-alive (NFCCTAP_GETRESPONSE pending). Handling all
++    /// of these in one place lets both applet SELECT and CTAP message exchange
++    /// work over contact and contactless alike.
++    fn exchange_full(&mut self, apdu: &[u8]) -> Result<(Vec<u8>, u8, u8), CtapError> {
++        let (mut data, mut sw1, mut sw2) = self.exchange(apdu)?;
++        loop {
++            match (sw1, sw2) {
++                (0x90, 0x00) => break,
++                // More data available: GET RESPONSE for sw2 bytes (0 => 256).
++                (0x61, n) => {
++                    let get_response = [GET_RESPONSE_CLA, GET_RESPONSE_INS, 0x00, 0x00, n];
++                    let (more, s1, s2) = self.exchange(&get_response)?;
++                    data.extend_from_slice(&more);
++                    sw1 = s1;
++                    sw2 = s2;
++                }
++                // Wrong Le under T=0: re-issue the same command with the
++                // length the card asked for (sw2), then continue draining.
++                (0x6C, n) => {
++                    let mut retry = apdu.to_vec();
++                    // Replace/append the Le byte with the card-suggested length.
++                    if let Some(last) = retry.last_mut() {
++                        *last = n;
++                    }
++                    let (again, s1, s2) = self.exchange(&retry)?;
++                    data = again;
++                    sw1 = s1;
++                    sw2 = s2;
++                }
++                // NFC keep-alive / processing: re-poll with GET RESPONSE.
++                (0x91, _) => {
++                    let get_response = [GET_RESPONSE_CLA, GET_RESPONSE_INS, 0x00, 0x00, 0x00];
++                    let (more, s1, s2) = self.exchange(&get_response)?;
++                    data.extend_from_slice(&more);
++                    sw1 = s1;
++                    sw2 = s2;
++                }
++                _ => break,
++            }
++        }
++        Ok((data, sw1, sw2))
++    }
++
+     /// Send a full CTAP message body (command byte + CBOR) wrapped in
+     /// `NFCCTAP_MSG`, using command chaining for long payloads, and collect the
+     /// full response across any `61 XX` / `91 00` continuations.
+@@ -141,47 +213,28 @@ impl CtapPcscDevice {
+             let mut apdu = vec![cla, NFCCTAP_INS, 0x00, 0x00, chunk.len() as u8];
+             apdu.extend_from_slice(chunk);
+             apdu.push(0x00); // Le — expect a response
+-            last = self.exchange(&apdu)?;
+-            // Non-final chaining APDUs should answer 90 00 with no data.
+-            if !is_last && (last.1, last.2) != (0x90, 0x00) {
+-                return Err(CtapError::Transport(format!(
+-                    "command chaining rejected (SW {:02X}{:02X})",
+-                    last.1, last.2
+-                )));
+-            }
+-        }
+-
+-        let (mut data, mut sw1, mut sw2) = last;
+-
+-        // Pull any continued response.
+-        loop {
+-            match (sw1, sw2) {
+-                (0x90, 0x00) => break,
+-                // More data available: GET RESPONSE for sw2 bytes (0 => 256).
+-                (0x61, n) => {
+-                    let le = n;
+-                    let apdu = [GET_RESPONSE_CLA, GET_RESPONSE_INS, 0x00, 0x00, le];
+-                    let (more, s1, s2) = self.exchange(&apdu)?;
+-                    data.extend_from_slice(&more);
+-                    sw1 = s1;
+-                    sw2 = s2;
+-                }
+-                // NFC keep-alive / processing: re-poll with GET RESPONSE.
+-                (0x91, _) => {
+-                    let apdu = [GET_RESPONSE_CLA, GET_RESPONSE_INS, 0x00, 0x00, 0x00];
+-                    let (more, s1, s2) = self.exchange(&apdu)?;
+-                    data.extend_from_slice(&more);
+-                    sw1 = s1;
+-                    sw2 = s2;
+-                }
+-                (s1, s2) => {
++            if is_last {
++                // Final piece: drain any 61xx/6Cxx/91xx continuation (contact T=0
++                // and NFC keep-alive) into the full response.
++                last = self.exchange_full(&apdu)?;
++            } else {
++                // Non-final chaining APDUs should answer 90 00 with no data.
++                let r = self.exchange(&apdu)?;
++                if (r.1, r.2) != (0x90, 0x00) {
+                     return Err(CtapError::Transport(format!(
+-                        "authenticator returned ISO status {s1:02X}{s2:02X}"
++                        "command chaining rejected (SW {:02X}{:02X})",
++                        r.1, r.2
+                     )));
+                 }
+             }
+         }
+ 
++        let (data, sw1, sw2) = last;
++        if (sw1, sw2) != (0x90, 0x00) {
++            return Err(CtapError::Transport(format!(
++                "authenticator returned ISO status {sw1:02X}{sw2:02X}"
++            )));
++        }
+         Ok(data)
+     }
+ }
+diff --git a/crates/keyroost-transport/src/lib.rs b/crates/keyroost-transport/src/lib.rs
+index eea41a7..3d31992 100644
+--- a/crates/keyroost-transport/src/lib.rs
++++ b/crates/keyroost-transport/src/lib.rs
+@@ -32,6 +32,9 @@ pub use oath::OathSession;
+ mod ctap_pcsc;
+ pub use ctap_pcsc::CtapPcscDevice;
+ 
++mod token2prog;
++pub use token2prog::Token2ProgSession;
++
+ mod openpgp;
+ pub use openpgp::{OpenPgpSession, OpenPgpStatus};
+ 
+@@ -587,6 +590,13 @@ pub struct ReaderProbe {
+     /// than guessing from the reader name, so the OTP tab is offered only for
+     /// keys that really have it.
+     pub has_otp: bool,
++    /// True when the card answers the single-profile programmable token's
++    /// `get_info` with a serial whose prefix matches a known model. Set during
++    /// the same probe connection. The matched serial is carried in
++    /// [`ReaderProbe::prog_serial`].
++    pub is_prog: bool,
++    /// The programmable token's serial, when `is_prog` is true.
++    pub prog_serial: Option<String>,
+     /// YubiKey management serial, read on the same connection when the reader is
+     /// a YubiKey.
+     pub yubikey_serial: Option<String>,
+@@ -643,6 +653,8 @@ pub fn probe_readers() -> Result<Vec<ReaderProbe>, TransportError> {
+                 has_piv: false,
+                 has_fido: false,
+                 has_otp: false,
++                is_prog: false,
++                prog_serial: None,
+                 yubikey_serial: None,
+                 usb_bus: None,
+                 usb_address: None,
+@@ -659,6 +671,8 @@ pub fn probe_readers() -> Result<Vec<ReaderProbe>, TransportError> {
+             has_piv: false,
+             has_fido: false,
+             has_otp: false,
++            is_prog: false,
++            prog_serial: None,
+             yubikey_serial: None,
+             usb_bus: None,
+             usb_address: None,
+@@ -704,6 +718,37 @@ pub fn probe_readers() -> Result<Vec<ReaderProbe>, TransportError> {
+                 "otp",
+                 keyroost_token2otp::build_select(&keyroost_token2otp::OTP_APPLET_AID),
+             );
++            // Single-profile programmable token: it has no distinctive reader
++            // name and no applet to SELECT, so identify it by its info response.
++            // Only flag it when the returned serial matches a known model prefix
++            // — a generic NFC card that happens to answer won't be mislabelled.
++            // Skip if an applet already matched (a FIDO/OATH key isn't a prog
++            // token), keeping the get_info off cards that clearly aren't one.
++            if !probe.has_fido && !probe.has_oath && !probe.has_piv && !probe.has_openpgp {
++                let info = keyroost_token2prog::get_info();
++                if let Ok((data, s1, s2)) = transmit_apdu(&card, &info.apdu) {
++                    let body = if s1 == 0x61 {
++                        transmit_apdu(&card, &[0x00, 0xC0, 0x00, 0x00, s2])
++                            .map(|(d, _, _)| d)
++                            .unwrap_or(data)
++                    } else {
++                        data
++                    };
++                    let _ = (s1, s2);
++                    if let Ok(parsed) = keyroost_token2prog::parse_info(&body) {
++                        if let Some(_model) = keyroost_token2prog::model_for_serial(&parsed.serial) {
++                            probe.is_prog = true;
++                            probe.prog_serial = Some(parsed.serial);
++                            if trace {
++                                eprintln!(
++                                    "[probe]   prog token -> {:?}",
++                                    probe.prog_serial
++                                );
++                            }
++                        }
++                    }
++                }
++            }
+             // When OpenPGP is present, recover the card serial from its AID (the
+             // standard OpenPGP AID encodes a 4-byte serial at offset 10). This
+             // lets keys with no HID serial (e.g. Token2 PIN+) still show one.
+diff --git a/crates/keyroost-transport/src/token2otp.rs b/crates/keyroost-transport/src/token2otp.rs
+index 3c349c8..9986b25 100644
+--- a/crates/keyroost-transport/src/token2otp.rs
++++ b/crates/keyroost-transport/src/token2otp.rs
+@@ -420,7 +420,7 @@ impl PcScOtpTransport {
+         Ok(())
+     }
+ 
+-    fn raw_transmit(&self, apdu: &[u8]) -> Result<(Vec<u8>, u16), OtpTransportError> {
++    fn raw_transmit(&mut self, apdu: &[u8]) -> Result<(Vec<u8>, u16), OtpTransportError> {
+         if self.debug {
+             let hex: String = apdu.iter().map(|b| format!("{b:02x}")).collect();
+             eprintln!("[token2otp PCSC send] {hex}");
+@@ -428,9 +428,36 @@ impl PcScOtpTransport {
+         let mut acc = Vec::new();
+         let mut to_send = apdu.to_vec();
+         let mut chunks = 0usize;
++        // Contact (T=0) readers occasionally drop a transmit with a transient
++        // SCARD_W_RESET_CARD / SCARD_F_COMM_ERROR ("communications error, retry").
++        // Reconnect to the card and retry the *current* APDU a few times before
++        // giving up, so a momentary glitch doesn't fail the whole read.
++        let mut retries_left = 3u8;
+         loop {
+             let mut rbuf = [0u8; 4096];
+-            let resp = self.card.transmit(&to_send, &mut rbuf)?;
++            let resp = match self.card.transmit(&to_send, &mut rbuf) {
++                Ok(r) => r,
++                Err(pcsc::Error::ResetCard)
++                | Err(pcsc::Error::RemovedCard)
++                | Err(pcsc::Error::CommError)
++                    if retries_left > 0 =>
++                {
++                    retries_left -= 1;
++                    if self.debug {
++                        eprintln!(
++                            "[token2otp PCSC] transient card error; reconnecting and retrying"
++                        );
++                    }
++                    // Re-establish the link to the same card and re-send this APDU.
++                    self.card.reconnect(
++                        pcsc::ShareMode::Shared,
++                        pcsc::Protocols::ANY,
++                        pcsc::Disposition::ResetCard,
++                    )?;
++                    continue;
++                }
++                Err(e) => return Err(OtpTransportError::Pcsc(e)),
++            };
+             if self.debug {
+                 let hex: String = resp.iter().map(|b| format!("{b:02x}")).collect();
+                 eprintln!("[token2otp PCSC recv] {hex}");
+diff --git a/crates/keyroost-transport/src/token2prog.rs b/crates/keyroost-transport/src/token2prog.rs
+new file mode 100644
+index 0000000..d9646af
+--- /dev/null
++++ b/crates/keyroost-transport/src/token2prog.rs
+@@ -0,0 +1,191 @@
++//! PC/SC transport for the Token2 2nd-generation single-profile programmable
++//! TOTP token.
++//!
++//! Mirrors the Molto2 [`crate::Session`] but for the single-profile token: it
++//! finds a reader, opens a card connection, and exposes the four operations
++//! (`read_info`, `authenticate`, `set_seed`, `set_config`) built by
++//! [`keyroost_token2prog`]. Like the Molto2 path — and the vendor reference tool
++//! — it talks to the card directly without an applet SELECT.
++//!
++//! Authentication uses the token's fixed device key (no customer key is
++//! supplied), so [`Token2ProgSession::authenticate`] takes no arguments.
++
++use keyroost_token2prog::{self as prog, Command};
++use pcsc::{Card, Context, Protocols, Scope, ShareMode};
++
++use crate::TransportError;
++
++/// A session against a single-profile programmable token over a reader.
++pub struct Token2ProgSession {
++    card: Card,
++    /// Set once `authenticate` has succeeded; gates the secured commands.
++    authenticated: bool,
++    /// When true, every APDU and response is printed to stderr with its label.
++    debug: bool,
++}
++
++impl Token2ProgSession {
++    /// Enable per-APDU stderr tracing. Useful for hardware bring-up.
++    pub fn set_debug(&mut self, on: bool) {
++        self.debug = on;
++    }
++
++    /// Open a session against a specific reader name.
++    pub fn open_named(reader_name: &str) -> Result<Self, TransportError> {
++        let ctx = Context::establish(Scope::User).map_err(TransportError::PcscUnavailable)?;
++        let cstring = std::ffi::CString::new(reader_name)
++            .map_err(|_| TransportError::MalformedResponse("reader name contained NUL"))?;
++        let card = ctx.connect(&cstring, ShareMode::Shared, Protocols::ANY)?;
++        Ok(Self {
++            card,
++            authenticated: false,
++            debug: false,
++        })
++    }
++
++    /// Transmit a built command, draining any T=0 `61xx` GET RESPONSE
++    /// continuation (contact readers), and return the response payload without
++    /// the SW1/SW2 trailer. Errors on any status word other than `9000`.
++    fn transmit(&mut self, cmd: &Command) -> Result<Vec<u8>, TransportError> {
++        if self.debug {
++            eprintln!("> {:>16} >> {}", cmd.label, hex(&cmd.apdu));
++        }
++        let (data, sw1, sw2) = self.exchange_full(&cmd.apdu, cmd.label)?;
++        if self.debug {
++            eprintln!("< {:>16} << ...{:02X}{:02X}", cmd.label, sw1, sw2);
++        }
++        // The challenge answer replies with a bare 9000 (no data) on success and
++        // 6983 when the device key is locked; surface the latter clearly.
++        if (sw1, sw2) == (0x69, 0x83) {
++            return Err(TransportError::Apdu {
++                label: cmd.label,
++                sw1,
++                sw2,
++            });
++        }
++        if (sw1, sw2) != (0x90, 0x00) {
++            return Err(TransportError::Apdu {
++                label: cmd.label,
++                sw1,
++                sw2,
++            });
++        }
++        Ok(data)
++    }
++
++    /// One APDU exchange plus T=0 `61xx`/`6Cxx` continuation handling, returning
++    /// `(data, sw1, sw2)`.
++    fn exchange_full(
++        &mut self,
++        apdu: &[u8],
++        label: &'static str,
++    ) -> Result<(Vec<u8>, u8, u8), TransportError> {
++        let (mut data, mut sw1, mut sw2) = self.exchange_once(apdu, label)?;
++        loop {
++            match (sw1, sw2) {
++                (0x90, 0x00) => break,
++                (0x61, n) => {
++                    let get = [0x00u8, 0xC0, 0x00, 0x00, n];
++                    let (more, s1, s2) = self.exchange_once(&get, label)?;
++                    data.extend_from_slice(&more);
++                    sw1 = s1;
++                    sw2 = s2;
++                }
++                (0x6C, n) => {
++                    let mut retry = apdu.to_vec();
++                    if let Some(last) = retry.last_mut() {
++                        *last = n;
++                    }
++                    let (again, s1, s2) = self.exchange_once(&retry, label)?;
++                    data = again;
++                    sw1 = s1;
++                    sw2 = s2;
++                }
++                _ => break,
++            }
++        }
++        Ok((data, sw1, sw2))
++    }
++
++    fn exchange_once(
++        &mut self,
++        apdu: &[u8],
++        label: &'static str,
++    ) -> Result<(Vec<u8>, u8, u8), TransportError> {
++        let mut buf = [0u8; 2048];
++        let response = self.card.transmit(apdu, &mut buf)?;
++        if response.len() < 2 {
++            return Err(TransportError::ShortResponse {
++                label,
++                got: response.len(),
++                expected_min: 2,
++            });
++        }
++        let (data, sw) = response.split_at(response.len() - 2);
++        Ok((data.to_vec(), sw[0], sw[1]))
++    }
++
++    /// Read the serial and on-device UTC time. No authentication required.
++    pub fn read_info(&mut self) -> Result<prog::Info, TransportError> {
++        let data = self.transmit(&prog::get_info())?;
++        prog::parse_info(&data).map_err(|_| TransportError::MalformedResponse("get info"))
++    }
++
++    /// Run the challenge-response handshake with the token's fixed device key.
++    pub fn authenticate(&mut self) -> Result<(), TransportError> {
++        let challenge = self.transmit(&prog::get_challenge())?;
++        if challenge.len() < 8 {
++            return Err(TransportError::ShortResponse {
++                label: "get challenge",
++                got: challenge.len(),
++                expected_min: 8,
++            });
++        }
++        let mut chal = [0u8; 8];
++        chal.copy_from_slice(&challenge[..8]);
++        self.transmit(&prog::answer_challenge(&chal))?;
++        self.authenticated = true;
++        Ok(())
++    }
++
++    /// `true` once `authenticate` has succeeded.
++    pub fn is_authenticated(&self) -> bool {
++        self.authenticated
++    }
++
++    fn require_auth(&self) -> Result<(), TransportError> {
++        if self.authenticated {
++            Ok(())
++        } else {
++            Err(TransportError::Apdu {
++                label: "secure command",
++                sw1: 0x69,
++                sw2: 0x82,
++            })
++        }
++    }
++
++    /// Program the OTP seed (raw key bytes, 1..=63). Requires prior `authenticate`.
++    pub fn set_seed(&mut self, seed: &[u8]) -> Result<(), TransportError> {
++        self.require_auth()?;
++        let cmd =
++            prog::set_seed(seed).map_err(|_| TransportError::MalformedResponse("seed length"))?;
++        self.transmit(&cmd)?;
++        Ok(())
++    }
++
++    /// Program the device configuration. Requires prior `authenticate`.
++    pub fn set_config(&mut self, cfg: &prog::Config) -> Result<(), TransportError> {
++        self.require_auth()?;
++        self.transmit(&prog::set_config(cfg))?;
++        Ok(())
++    }
++}
++
++fn hex(bytes: &[u8]) -> String {
++    let mut s = String::with_capacity(bytes.len() * 2);
++    for b in bytes {
++        s.push_str(&format!("{b:02X}"));
++    }
++    s
++}
+diff --git a/crates/keyroost/Cargo.toml b/crates/keyroost/Cargo.toml
+index e3bb4a8..6c1ae07 100644
+--- a/crates/keyroost/Cargo.toml
++++ b/crates/keyroost/Cargo.toml
+@@ -17,6 +17,7 @@ path = "src/main.rs"
+ [dependencies]
+ keyroost-proto = { path = "../keyroost-proto", version = "0.7.1" }
+ keyroost-transport = { path = "../keyroost-transport", version = "0.7.1" }
++keyroost-token2prog = { path = "../keyroost-token2prog", version = "0.7.1" }
+ keyroost-token2otp = { path = "../keyroost-token2otp", version = "0.7.1" }
+ keyroost-piv = { path = "../keyroost-piv", version = "0.7.1" }
+ keyroost-hid = { path = "../keyroost-hid", version = "0.7.1" }
+@@ -56,6 +57,16 @@ rfd = { version = "0.17", default-features = false, features = ["xdg-portal", "w
+ # directly so `pollster::block_on` is callable.
+ pollster = "0.4"
+ 
++# QR-from-screen scanning (optional; `--features qr`). Only the screen capture
++# is new here — decoding reuses keyroost-qr (already a dependency). `screenshots`
++# is pinned to match the workspace's Rust 1.75 toolchain.
++screenshots = { version = "=0.5.4", optional = true }
++
++[features]
++# Scan a TOTP QR shown on screen to fill a seed/profile form. Adds the
++# `screenshots` capture dependency; decoding/parsing are already in the tree.
++qr = ["dep:screenshots"]
++
+ # cargo-binstall support: `cargo binstall` fetches the existing attested
+ # GitHub release archives (same artifacts, same SHA256SUMS/provenance)
+ # instead of compiling. Targets without a prebuilt archive fall back to a
+diff --git a/crates/keyroost/src/main.rs b/crates/keyroost/src/main.rs
+index 5853c02..dd50f43 100644
+--- a/crates/keyroost/src/main.rs
++++ b/crates/keyroost/src/main.rs
+@@ -8,6 +8,8 @@
+ use std::time::{SystemTime, UNIX_EPOCH};
+ 
+ mod otp_pane;
++#[cfg(feature = "qr")]
++mod qrscan;
+ mod settings;
+ mod ui;
+ use otp_pane::OtpState;
+@@ -21,6 +23,7 @@ use keyroost_proto::commands::{
+     DisplayTimeout, HmacAlgo, OtpDigits, ProfileConfig, TimeStep, DEFAULT_CUSTOMER_KEY,
+ };
+ use keyroost_transport::{DeviceInfo, Session, TransportError};
++use keyroost_transport::Token2ProgSession;
+ 
+ use keyroost_ctap::client_pin::PinUvAuthToken;
+ use keyroost_ctap::cred_mgmt::{Credential, CredsMetadata, RelyingParty};
+@@ -1089,6 +1092,23 @@ struct App {
+     info: Option<DeviceInfo>,
+     /// Whether the session has been authenticated.
+     authenticated: bool,
++    /// Active single-profile programmable-token session, if any.
++    prog_session: Option<keyroost_transport::Token2ProgSession>,
++    /// Last programmable-token info read (serial + on-device UTC time).
++    prog_info: Option<keyroost_token2prog::Info>,
++    /// Whether the programmable-token session has been authenticated.
++    prog_authenticated: bool,
++    /// Form state for programming the prog token (seed + config inputs).
++    prog_seed_input: String,
++    prog_seed_hex: bool,
++    prog_algo_sha256: bool,
++    prog_step_60: bool,
++    prog_timeout_idx: usize,
++    /// Last burn result for the prog pane: (success, message). Shown inline.
++    prog_status: Option<(bool, String)>,
++    /// Per-field "show secret" toggles for password inputs, keyed by a stable
++    /// id. Absent = masked (the default).
++    secret_reveal: std::collections::HashMap<&'static str, bool>,
+     /// Customer key text the user typed.
+     customer_key_input: String,
+     /// Treat customer_key_input as hex vs ASCII.
+@@ -1768,6 +1788,19 @@ impl App {
+         });
+     }
+ 
++    /// Scan a TOTP QR from the screen, then run the normal otpauth import to
++    /// fill the Molto2 draft — reusing the same parse+fill path as paste-a-URI.
++    #[cfg(feature = "qr")]
++    fn molto_scan_qr(&mut self) {
++        match qrscan::scan_screens_for_otpauth() {
++            Ok(uri) => {
++                self.import_dialog.uri = uri;
++                self.import_otpauth();
++            }
++            Err(e) => self.log(Severity::Err, format!("scan QR: {e}")),
++        }
++    }
++
+     fn import_otpauth(&mut self) {
+         let uri = self.import_dialog.uri.trim().to_owned();
+         let parsed = match parse_otpauth(&uri) {
+@@ -3102,6 +3135,19 @@ impl App {
+                         "base32 (behind the QR code)",
+                         300.0,
+                     );
++                    #[cfg(feature = "qr")]
++                    {
++                        ui.add_space(4.0);
++                        ui.horizontal(|ui| {
++                            ui.add_space(100.0);
++                            let (resp, icon_center, fg) =
++                                theme::button_with_icon(ui, p, BtnKind::Default, "Scan QR", 14.0);
++                            paint_qr_icon(ui, icon_center, fg);
++                            if resp.clicked() {
++                                self.oath_scan_qr();
++                            }
++                        });
++                    }
+                     ui.horizontal(|ui| {
+                         ui.add_sized(
+                             [96.0, 22.0],
+@@ -3846,6 +3892,65 @@ fn piv_default_mgmt_key_hex(is_token2: bool) -> &'static str {
+     }
+ }
+ 
++/// Full uppercase hex of a byte slice (no truncation), matching the
++/// credential-details display.
++/// Render a masked secret input with a trailing eye toggle. `revealed` is read
++/// for the initial mask state and updated in place when the eye is clicked, so
++/// the caller can keep the flag wherever it likes. Returns the TextEdit
++/// response. The buffer text is shown in clear when `*revealed`.
++pub(crate) fn secret_edit(
++    ui: &mut egui::Ui,
++    p: &Palette,
++    buf: &mut String,
++    revealed: &mut bool,
++    hint: &str,
++    width: f32,
++) -> egui::Response {
++    let mut resp = None;
++    ui.horizontal(|ui| {
++        let mut edit = egui::TextEdit::singleline(buf)
++            .vertical_align(egui::Align::Center)
++            .desired_width(width);
++        if !*revealed {
++            edit = edit.password(true);
++        }
++        if !hint.is_empty() {
++            edit = edit.hint_text(hint);
++        }
++        resp = Some(ui.add_sized([width, 32.0], edit));
++        // Eye toggle, painted (the UI font has no emoji glyphs). Open eye =
++        // shown, slashed eye = hidden.
++        let (irect, ir) =
++            ui.allocate_exact_size(egui::vec2(26.0, 32.0), egui::Sense::click());
++        let col = if ir.hovered() { p.txt } else { p.txt2 };
++        let c = irect.center();
++        paint_eye_icon(ui, c, col);
++        if !*revealed {
++            // Slash across the eye to signal the hidden state.
++            ui.painter().line_segment(
++                [egui::pos2(c.x - 8.0, c.y + 5.0), egui::pos2(c.x + 8.0, c.y - 5.0)],
++                egui::Stroke::new(1.3, col),
++            );
++        }
++        if ir.hovered() {
++            ui.ctx().set_cursor_icon(egui::CursorIcon::PointingHand);
++        }
++        if ir.clicked() {
++            *revealed = !*revealed;
++        }
++        let _ = ir.on_hover_text(if *revealed { "Hide" } else { "Show" });
++    });
++    resp.unwrap()
++}
++
++fn hex_full(bytes: &[u8]) -> String {
++    let mut s = String::with_capacity(bytes.len() * 2);
++    for b in bytes {
++        s.push_str(&format!("{:02X}", b));
++    }
++    s
++}
++
+ fn hex_short(bytes: &[u8]) -> String {
+     let mut s = String::with_capacity(bytes.len() * 2);
+     for b in bytes.iter().take(8) {
+@@ -4010,6 +4115,7 @@ impl App {
+         };
+         match dev.kind {
+             DeviceKind::Token => self.open_molto(),
++            DeviceKind::ProgToken => self.open_prog(),
+             DeviceKind::Key if dev.caps.has(Caps::FIDO2) => self.fetch_selected_info(),
+             DeviceKind::Key => {}
+         }
+@@ -4052,6 +4158,34 @@ impl App {
+         });
+     }
+ 
++    /// Open the selected programmable token's PC/SC session and read its info,
++    /// so the pane can show the model, serial and on-device clock.
++    fn open_prog(&mut self) {
++        let Some(reader) = self.selected_device().and_then(|d| d.reader.clone()) else {
++            return;
++        };
++        self.spawn_job("Opening token\u{2026}", move || {
++            let result =
++                (|| -> Result<(Token2ProgSession, keyroost_token2prog::Info), TransportError> {
++                    let mut s = Token2ProgSession::open_named(&reader)?;
++                    let info = s.read_info()?;
++                    Ok((s, info))
++                })();
++            Box::new(move |app: &mut App| match result {
++                Ok((s, info)) => {
++                    app.log(
++                        Severity::Ok,
++                        format!("opened programmable token {}", info.serial),
++                    );
++                    app.prog_session = Some(s);
++                    app.prog_info = Some(info);
++                    app.prog_authenticated = false;
++                }
++                Err(e) => app.log(Severity::Err, format!("open token: {e}")),
++            })
++        });
++    }
++
+     /// Read the selected card's read-only PIV status snapshot.
+     fn load_piv_status(&mut self) {
+         self.piv.error = None;
+@@ -5172,6 +5306,27 @@ fn paint_refresh_icon(ui: &egui::Ui, center: egui::Pos2, r: f32, color: egui::Co
+ }
+ 
+ /// Two stacked sheets — copy.
++/// Format a Unix timestamp (seconds) as a human-readable UTC string
++/// `YYYY-MM-DD HH:MM:SS UTC`. Self-contained civil-date conversion (Howard
++/// Hinnant's algorithm) so no date crate is pulled in.
++fn fmt_unix_utc(secs: u32) -> String {
++    let days = (secs / 86_400) as i64;
++    let rem = secs % 86_400;
++    let (hh, mm, ss) = (rem / 3600, (rem % 3600) / 60, rem % 60);
++    // days since 1970-01-01 -> civil date
++    let z = days + 719_468;
++    let era = z.div_euclid(146_097);
++    let doe = z.rem_euclid(146_097);
++    let yoe = (doe - doe / 1460 + doe / 36_524 - doe / 146_096) / 365;
++    let y = yoe + era * 400;
++    let doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
++    let mp = (5 * doy + 2) / 153;
++    let d = doy - (153 * mp + 2) / 5 + 1;
++    let m = if mp < 10 { mp + 3 } else { mp - 9 };
++    let y = if m <= 2 { y + 1 } else { y };
++    format!("{y:04}-{m:02}-{d:02} {hh:02}:{mm:02}:{ss:02} UTC")
++}
++
+ fn paint_copy_icon(ui: &egui::Ui, center: egui::Pos2, color: egui::Color32) {
+     let s = egui::Stroke::new(1.3, color);
+     let back = egui::Rect::from_min_size(center + egui::vec2(-1.0, -5.0), egui::vec2(7.0, 8.0));
+@@ -5181,6 +5336,31 @@ fn paint_copy_icon(ui: &egui::Ui, center: egui::Pos2, color: egui::Color32) {
+         .rect_stroke(front, egui::Rounding::same(1.5), s);
+ }
+ 
++/// A small QR-glyph: three finder squares plus a couple of module dots.
++
++pub(crate) fn paint_qr_icon(ui: &egui::Ui, center: egui::Pos2, color: egui::Color32) {
++    let s = egui::Stroke::new(1.2, color);
++    // Three finder squares (top-left, top-right, bottom-left).
++    let finder = |min: egui::Vec2| {
++        let r = egui::Rect::from_min_size(center + min, egui::vec2(3.4, 3.4));
++        ui.painter().rect_stroke(r, egui::Rounding::same(0.6), s);
++    };
++    finder(egui::vec2(-5.0, -5.0));
++    finder(egui::vec2(1.6, -5.0));
++    finder(egui::vec2(-5.0, 1.6));
++    // A few modules in the data quadrant so it reads as a QR, not four boxes.
++    let dot = |off: egui::Vec2| {
++        ui.painter().rect_filled(
++            egui::Rect::from_min_size(center + off, egui::vec2(1.2, 1.2)),
++            egui::Rounding::ZERO,
++            color,
++        );
++    };
++    dot(egui::vec2(2.0, 2.0));
++    dot(egui::vec2(4.0, 4.0));
++    dot(egui::vec2(2.0, 4.4));
++}
++
+ /// Checkmark — copied / confirmed.
+ fn paint_check_icon(ui: &egui::Ui, center: egui::Pos2, color: egui::Color32) {
+     let s = egui::Stroke::new(1.7, color);
+@@ -5257,7 +5437,7 @@ fn device_row(ui: &mut egui::Ui, p: &Palette, dev: &Device, selected: bool) -> b
+         );
+     }
+ 
+-    let token = dev.kind == DeviceKind::Token;
++    let token = dev.kind == DeviceKind::Token || dev.kind == DeviceKind::ProgToken;
+     let tile = egui::Rect::from_min_size(
+         rect.left_top() + egui::vec2(14.0, (h - 38.0) / 2.0),
+         egui::vec2(38.0, 38.0),
+@@ -5592,8 +5772,15 @@ impl App {
+     /// Top bar: brand · "keyroost" · connected count | accents · theme · Learn ·
+     /// Activity log · Refresh.
+     fn top_bar(&mut self, ctx: &egui::Context, p: &Palette) {
++        // The bar height must track the zoom factor: at a larger text size the
++        // glyph tile, labels and icons are all scaled up, and a fixed 52px panel
++        // would clip them and let the left content overrun the right-hand
++        // controls. Scale the base height by the live zoom so the bar grows with
++        // its contents (clamped so it never collapses below the base).
++        let zoom = theme::clamp_zoom(ctx.zoom_factor());
++        let bar_h = (52.0 * zoom).max(52.0);
+         egui::TopBottomPanel::top("bar")
+-            .exact_height(52.0)
++            .exact_height(bar_h)
+             .frame(panel_frame(p.bar, 16.0, 0.0))
+             .show(ctx, |ui| {
+                 ui.horizontal_centered(|ui| {
+@@ -5616,10 +5803,16 @@ impl App {
+                         ui.add_space(12.0);
+                         ui.spinner();
+                         if let Some(label) = &self.busy_label {
+-                            ui.label(
+-                                egui::RichText::new(label.as_str())
+-                                    .font(theme::f_reg(12.0))
+-                                    .color(p.txt3),
++                            // Truncate so a long status never pushes the left
++                            // content into the right-hand controls (overlap on
++                            // small / zoomed layouts).
++                            ui.add(
++                                egui::Label::new(
++                                    egui::RichText::new(label.as_str())
++                                        .font(theme::f_reg(12.0))
++                                        .color(p.txt3),
++                                )
++                                .truncate(),
+                             );
+                         }
+                     }
+@@ -5776,6 +5969,42 @@ impl App {
+         style.visuals.widgets.inactive.fg_stroke = egui::Stroke::new(1.0, p.txt2);
+         style.visuals.widgets.hovered.fg_stroke = egui::Stroke::new(1.0, p.txt);
+         style.spacing.slider_width = 92.0;
++
++        // [+] / [−] steppers flanking the slider, each nudging the size by 1%
++        // (0.01). The bar is laid out right-to-left, so to read "[−] slider [+]"
++        // left-to-right we emit the [+] first, then the slider, then the [−].
++        // A small closure paints one square stepper button and reports clicks.
++        let step = |ui: &mut egui::Ui, glyph: &str| -> bool {
++            let (rect, resp) =
++                ui.allocate_exact_size(egui::vec2(16.0, 16.0), egui::Sense::click());
++            let hot = resp.hovered();
++            ui.painter().rect_filled(
++                rect,
++                3.0,
++                if hot {
++                    theme::lighten(p.raised2, 0.08)
++                } else {
++                    p.raised2
++                },
++            );
++            ui.painter().text(
++                rect.center(),
++                egui::Align2::CENTER_CENTER,
++                glyph,
++                theme::f_sb(13.0),
++                if hot { p.txt } else { p.txt2 },
++            );
++            resp.on_hover_cursor(egui::CursorIcon::PointingHand).clicked()
++        };
++
++        // [+] (rightmost of the trio in this RTL row).
++        if step(ui, "+") {
++            factor = theme::clamp_zoom(factor + 0.01);
++            ui.ctx().set_zoom_factor(factor);
++            self.zoom_pending = None;
++        }
++        ui.add_space(4.0);
++
+         let resp = ui.add(
+             egui::Slider::new(&mut factor, theme::ZOOM_MIN..=theme::ZOOM_MAX).show_value(false),
+         );
+@@ -5793,6 +6022,15 @@ impl App {
+             self.zoom_pending = None;
+         }
+         resp.on_hover_text("Text size — scales the whole interface (Ctrl + / Ctrl − also work)");
++
++        ui.add_space(4.0);
++        // [−] (leftmost of the trio).
++        if step(ui, "\u{2212}") {
++            factor = theme::clamp_zoom(factor - 0.01);
++            ui.ctx().set_zoom_factor(factor);
++            self.zoom_pending = None;
++        }
++
+         ui.add_space(7.0);
+ 
+         // Label.
+@@ -5982,6 +6220,9 @@ impl App {
+                 match self.selected_device().cloned() {
+                     None => self.empty_state(ui, p),
+                     Some(dev) if dev.kind == DeviceKind::Token => self.molto_view(ui, p, &dev),
++                    Some(dev) if dev.kind == DeviceKind::ProgToken => {
++                        self.prog_view(ui, p, &dev)
++                    }
+                     Some(dev) => {
+                         // Cap the content column to a readable width and center it.
+                         // At wide window sizes a full-width card flings its label to
+@@ -6168,7 +6409,7 @@ impl App {
+                     ui.add_space(3.0);
+                     ui.label(
+                         egui::RichText::new(
+-                            "Saves this key's serial with the name to keys.json on this computer \u{2014} nothing leaves your machine. Lowercase letters, digits, - and _.",
++                            "Saves this key's serial with the name to keys.json on this computer \u{2014} nothing leaves your machine. Up to 64 characters.",
+                         )
+                         .font(theme::f_reg(11.5))
+                         .color(p.txt3),
+@@ -7077,28 +7318,88 @@ impl App {
+                                     ui.label("(no credentials)");
+                                 }
+                                 for c in creds {
+-                                    ui.horizontal(|ui| {
+-                                        ui.monospace(hex_short(&c.credential_id));
+-                                        let user_field = c
+-                                            .user
+-                                            .display_name
+-                                            .clone()
+-                                            .or_else(|| c.user.name.clone())
+-                                            .unwrap_or_else(|| {
+-                                                String::from_utf8_lossy(&c.user.id).into_owned()
+-                                            });
+-                                        ui.label(user_field);
+-                                        ui.with_layout(
+-                                            egui::Layout::right_to_left(egui::Align::Center),
+-                                            |ui| {
+-                                                if theme::button(ui, p, BtnKind::Ghost, "Remove")
+-                                                    .clicked()
++                                    // Right-to-left so the Remove button claims its
++                                    // space first; the identity column then fills the
++                                    // remaining width and wraps within it (long hex
++                                    // IDs no longer run under the button).
++                                    ui.with_layout(
++                                        egui::Layout::right_to_left(egui::Align::Min),
++                                        |ui| {
++                                            if theme::button(ui, p, BtnKind::Ghost, "Remove")
++                                                .clicked()
++                                            {
++                                                delete = Some(c.credential_id.clone());
++                                            }
++                                            ui.add_space(8.0);
++                                            ui.vertical(|ui| {
++                                                // Distinct identity fields, like the
++                                                // authenticator's credential details:
++                                                // User Name (UPN), Display Name, User
++                                                // ID, Credential ID.
++                                                let row = |ui: &mut egui::Ui,
++                                                           label: &str,
++                                                           val: String,
++                                                           mono: bool| {
++                                                    if val.is_empty() {
++                                                        return;
++                                                    }
++                                                    ui.horizontal_wrapped(|ui| {
++                                                        ui.spacing_mut().item_spacing.x = 6.0;
++                                                        ui.label(
++                                                            egui::RichText::new(label)
++                                                                .font(theme::f_sb(11.5))
++                                                                .color(p.txt3),
++                                                        );
++                                                        let font = if mono {
++                                                            theme::f_mono(11.5)
++                                                        } else {
++                                                            theme::f_reg(12.0)
++                                                        };
++                                                        ui.label(
++                                                            egui::RichText::new(val)
++                                                                .font(font)
++                                                                .color(p.txt2),
++                                                        );
++                                                    });
++                                                };
++                                                row(
++                                                    ui,
++                                                    "User Name",
++                                                    c.user.name.clone().unwrap_or_default(),
++                                                    false,
++                                                );
++                                                row(
++                                                    ui,
++                                                    "Display Name",
++                                                    c.user.display_name.clone().unwrap_or_default(),
++                                                    false,
++                                                );
++                                                // User ID: text if printable ASCII,
++                                                // else hex (often a random blob).
++                                                let uid = if c.user.id.is_empty() {
++                                                    String::new()
++                                                } else if c
++                                                    .user
++                                                    .id
++                                                    .iter()
++                                                    .all(|b| b.is_ascii_graphic() || *b == b' ')
+                                                 {
+-                                                    delete = Some(c.credential_id.clone());
+-                                                }
+-                                            },
+-                                        );
+-                                    });
++                                                    String::from_utf8_lossy(&c.user.id)
++                                                        .into_owned()
++                                                } else {
++                                                    hex_full(&c.user.id)
++                                                };
++                                                row(ui, "User ID", uid, true);
++                                                row(
++                                                    ui,
++                                                    "Credential ID",
++                                                    hex_full(&c.credential_id),
++                                                    true,
++                                                );
++                                            });
++                                        },
++                                    );
++                                    ui.separator();
+                                 }
+                             });
+                         }
+@@ -10155,13 +10456,17 @@ impl App {
+                         );
+                         self.help_dot(ui, p, "custkey");
+                         ui.add_space(6.0);
+-                        ui.add_sized(
+-                            [200.0, 32.0],
+-                            egui::TextEdit::singleline(&mut self.customer_key_input)
+-                                .vertical_align(egui::Align::Center)
+-                                .password(true)
+-                                .hint_text("default if empty"),
++                        let mut rev =
++                            self.secret_reveal.get("customer-key").copied().unwrap_or(false);
++                        secret_edit(
++                            ui,
++                            p,
++                            &mut self.customer_key_input,
++                            &mut rev,
++                            "default if empty",
++                            200.0,
+                         );
++                        self.secret_reveal.insert("customer-key", rev);
+                         ui.checkbox(&mut self.customer_key_hex, "hex");
+                         if theme::button(ui, p, BtnKind::Default, "Authenticate").clicked() {
+                             self.authenticate();
+@@ -10275,12 +10580,20 @@ impl App {
+                                 ui.add(egui::TextEdit::singleline(&mut self.draft.title).hint_text("\u{2264} 12 chars").desired_width(360.0));
+                             });
+                             editor_row(ui, p, "Secret", |ui| {
+-                                ui.add(
+-                                    egui::TextEdit::singleline(&mut self.draft.secret_base32)
+-                                        .password(true)
+-                                        .hint_text("base32 secret")
+-                                        .desired_width(360.0),
++                                let mut rev = self
++                                    .secret_reveal
++                                    .get("molto-secret")
++                                    .copied()
++                                    .unwrap_or(false);
++                                secret_edit(
++                                    ui,
++                                    p,
++                                    &mut self.draft.secret_base32,
++                                    &mut rev,
++                                    "base32 secret",
++                                    360.0,
+                                 );
++                                self.secret_reveal.insert("molto-secret", rev);
+                             });
+                             // Two columns for the short choices, to use the width.
+                             let field_label = |ui: &mut egui::Ui, w: f32, text: &str| {
+@@ -10349,6 +10662,22 @@ impl App {
+                                     self.import_dialog.open = true;
+                                 }
+                                 ui.add_space(6.0);
++                                #[cfg(feature = "qr")]
++                                {
++                                    let (resp, icon_center, fg) = theme::button_with_icon(
++                                        ui,
++                                        p,
++                                        BtnKind::Default,
++                                        "Scan QR",
++                                        14.0,
++                                    );
++                                    paint_qr_icon(ui, icon_center, fg);
++                                    if resp.clicked() {
++                                        self.molto_scan_qr();
++                                    }
++                                }
++                                #[cfg(feature = "qr")]
++                                ui.add_space(6.0);
+                                 if theme::button(ui, p, BtnKind::Default, "Sync time").clicked() {
+                                     self.sync_time_selected();
+                                 }
+@@ -10359,6 +10688,323 @@ impl App {
+             });
+     }
+ 
++    /// Pane for the single-profile programmable token: shows model/serial/clock
++    /// and a form to program a seed + configuration. Uses the brand accent like
++    /// the Molto2 view.
++    fn prog_view(&mut self, ui: &mut egui::Ui, p: &Palette, dev: &Device) {
++        let mp = Palette {
++            accent: p.brand,
++            ..*p
++        };
++        let p = &mp;
++
++        // Hero: brand tile + model + serial + on-device clock.
++        egui::Frame::none()
++            .inner_margin(egui::Margin::symmetric(26.0, 16.0))
++            .show(ui, |ui| {
++                ui.horizontal(|ui| {
++                    glyph_tile(ui, 46.0, p.brand, p.accent_ink, None);
++                    ui.add_space(12.0);
++                    ui.vertical(|ui| {
++                        ui.label(
++                            egui::RichText::new(dev.title())
++                                .font(theme::f_bold(18.0))
++                                .color(p.txt),
++                        );
++                        let serial = self
++                            .prog_info
++                            .as_ref()
++                            .map(|i| i.serial.clone())
++                            .unwrap_or_else(|| dev.serial.clone());
++                        ui.label(
++                            egui::RichText::new(format!("Token2 · serial {serial}"))
++                                .font(theme::f_reg(12.5))
++                                .color(p.txt2),
++                        );
++                        if let Some(info) = &self.prog_info {
++                            ui.label(
++                                egui::RichText::new(format!(
++                                    "device clock (UTC): {}",
++                                    fmt_unix_utc(info.utc_time)
++                                ))
++                                    .font(theme::f_reg(12.0))
++                                    .color(p.txt3),
++                            );
++                        }
++                    });
++                });
++            });
++
++        ui.separator();
++
++        // Program form.
++        egui::Frame::none()
++            .inner_margin(egui::Margin::symmetric(26.0, 12.0))
++            .show(ui, |ui| {
++                ui.label(
++                    egui::RichText::new("Program seed & configuration")
++                        .font(theme::f_sb(14.0))
++                        .color(p.txt),
++                );
++                ui.add_space(8.0);
++
++                ui.horizontal(|ui| {
++                    ui.label(egui::RichText::new("Seed:").font(theme::f_reg(12.5)).color(p.txt2));
++                    ui.add(
++                        egui::TextEdit::singleline(&mut self.prog_seed_input)
++                            .desired_width(320.0)
++                            .hint_text(if self.prog_seed_hex { "hex" } else { "base32" }),
++                    );
++                    ui.checkbox(&mut self.prog_seed_hex, "hex");
++                });
++                ui.add_space(6.0);
++
++                ui.horizontal(|ui| {
++                    ui.label(egui::RichText::new("Algorithm:").font(theme::f_reg(12.5)).color(p.txt2));
++                    egui::ComboBox::from_id_salt("prog-algo")
++                        .selected_text(if self.prog_algo_sha256 { "SHA256" } else { "SHA1" })
++                        .show_ui(ui, |ui| {
++                            ui.selectable_value(&mut self.prog_algo_sha256, false, "SHA1");
++                            ui.selectable_value(&mut self.prog_algo_sha256, true, "SHA256");
++                        });
++                    ui.add_space(12.0);
++                    ui.label(egui::RichText::new("Time step:").font(theme::f_reg(12.5)).color(p.txt2));
++                    egui::ComboBox::from_id_salt("prog-step")
++                        .selected_text(if self.prog_step_60 { "60s" } else { "30s" })
++                        .show_ui(ui, |ui| {
++                            ui.selectable_value(&mut self.prog_step_60, false, "30s");
++                            ui.selectable_value(&mut self.prog_step_60, true, "60s");
++                        });
++                    ui.add_space(12.0);
++                    ui.label(egui::RichText::new("Sleep:").font(theme::f_reg(12.5)).color(p.txt2));
++                    let timeouts = ["15s", "30s", "60s", "120s"];
++                    egui::ComboBox::from_id_salt("prog-timeout")
++                        .selected_text(timeouts[self.prog_timeout_idx.min(3)])
++                        .show_ui(ui, |ui| {
++                            for (i, t) in timeouts.iter().enumerate() {
++                                ui.selectable_value(&mut self.prog_timeout_idx, i, *t);
++                            }
++                        });
++                });
++                ui.add_space(12.0);
++
++                let busy = self.busy();
++                let can_burn = !busy && !self.prog_seed_input.trim().is_empty();
++                ui.horizontal(|ui| {
++                    ui.add_enabled_ui(can_burn, |ui| {
++                        if theme::button(ui, p, BtnKind::Primary, "Burn seed").clicked() {
++                            self.prog_burn();
++                        }
++                    });
++                    #[cfg(feature = "qr")]
++                    {
++                        ui.add_space(6.0);
++                        let (resp, icon_center, fg) =
++                            theme::button_with_icon(ui, p, BtnKind::Default, "Scan QR", 14.0);
++                        paint_qr_icon(ui, icon_center, fg);
++                        if resp.clicked() {
++                            self.prog_scan_qr();
++                        }
++                    }
++                });
++                ui.add_space(4.0);
++                ui.label(
++                    egui::RichText::new(
++                        "Sets the configuration (clock + parameters) and writes the seed.",
++                    )
++                    .font(theme::f_reg(11.5))
++                    .color(p.txt3),
++                );
++
++                if let Some((ok, msg)) = &self.prog_status {
++                    ui.add_space(8.0);
++                    ui.label(
++                        egui::RichText::new(msg)
++                            .font(theme::f_sb(12.5))
++                            .color(if *ok { p.ok } else { p.err }),
++                    );
++                }
++            });
++    }
++
++    /// Authenticate (fixed device key) and program config + seed in one job.
++    fn prog_burn(&mut self) {
++        self.prog_status = None;
++        let Some(reader) = self.selected_device().and_then(|d| d.reader.clone()) else {
++            return;
++        };
++        // Decode the seed up front so input errors surface before any I/O.
++        let raw = self.prog_seed_input.trim().to_string();
++        let seed = if self.prog_seed_hex {
++            keyroost_proto::codec::hex_decode(&raw)
++        } else {
++            keyroost_proto::codec::base32_decode(&raw)
++        };
++        let seed = match seed {
++            Ok(s) if !s.is_empty() && s.len() <= 63 => s,
++            Ok(s) => {
++                self.log(Severity::Err, format!("seed length {} out of range (1..=63)", s.len()));
++                return;
++            }
++            Err(e) => {
++                self.log(Severity::Err, format!("invalid seed: {e}"));
++                return;
++            }
++        };
++        // Pad short seeds to the standard 20-byte TOTP length with trailing
++        // zero bytes, matching the vendor tool. Without this a 10-byte base32
++        // secret is stored as 10 bytes and the device's codes won't match an
++        // authenticator app that uses the same secret padded to 20 bytes.
++        let seed = keyroost_token2prog::pad_totp_seed(seed);
++        let algo = if self.prog_algo_sha256 {
++            keyroost_token2prog::HmacAlgo::Sha256
++        } else {
++            keyroost_token2prog::HmacAlgo::Sha1
++        };
++        let step = if self.prog_step_60 {
++            keyroost_token2prog::TimeStep::Seconds60
++        } else {
++            keyroost_token2prog::TimeStep::Seconds30
++        };
++        let timeout = match self.prog_timeout_idx {
++            0 => keyroost_token2prog::DisplayTimeout::Sec15,
++            2 => keyroost_token2prog::DisplayTimeout::Sec60,
++            3 => keyroost_token2prog::DisplayTimeout::Sec120,
++            _ => keyroost_token2prog::DisplayTimeout::Sec30,
++        };
++        let now = std::time::SystemTime::now()
++            .duration_since(std::time::UNIX_EPOCH)
++            .map(|d| d.as_secs() as u32)
++            .unwrap_or(0);
++
++        self.spawn_job("Programming token\u{2026}", move || {
++            let result = (|| -> Result<(), TransportError> {
++                let mut s = Token2ProgSession::open_named(&reader)?;
++                s.authenticate()?;
++                let cfg = keyroost_token2prog::Config {
++                    display_timeout: timeout,
++                    algorithm: algo,
++                    time_step: step,
++                    utc_time: now,
++                };
++                s.set_config(&cfg)?;
++                s.set_seed(&seed)?;
++                Ok(())
++            })();
++            Box::new(move |app: &mut App| match result {
++                Ok(()) => {
++                    app.log(Severity::Ok, "programmed token (config + seed)".to_string());
++                    app.prog_status =
++                        Some((true, "Seed and configuration programmed successfully.".to_string()));
++                    app.prog_seed_input.clear();
++                }
++                Err(e) => {
++                    app.log(Severity::Err, format!("program token: {e}"));
++                    app.prog_status = Some((false, format!("Programming failed: {e}")));
++                }
++            })
++        });
++    }
++
++    /// Scan a TOTP QR from the screen and fill the prog seed form from it.
++    #[cfg(feature = "qr")]
++    /// Shared QR-from-screen scan: returns the base32 secret (as written in the
++    /// URI) plus the parsed `OtpAuth`, so callers can fill issuer/algorithm/etc.
++    #[cfg(feature = "qr")]
++    fn scan_qr_parsed(&mut self) -> Result<(String, keyroost_import::OtpAuth), String> {
++        let uri = qrscan::scan_screens_for_otpauth()?;
++        let parsed = parse_otpauth(&uri).map_err(|e| format!("QR parse failed: {e}"))?;
++        let secret = uri
++            .find("secret=")
++            .map(|i| {
++                let rest = &uri[i + 7..];
++                let end = rest.find('&').unwrap_or(rest.len());
++                rest[..end].to_owned()
++            })
++            .unwrap_or_default();
++        if secret.is_empty() {
++            return Err("scanned QR has no secret".into());
++        }
++        Ok((secret, parsed))
++    }
++
++    /// Fill the OATH "New credential" fields from a scanned screen QR.
++    #[cfg(feature = "qr")]
++    fn oath_scan_qr(&mut self) {
++        match self.scan_qr_parsed() {
++            Ok((secret, parsed)) => {
++                self.oath.add.secret = secret;
++                // The OATH dialog's name is "issuer:account"; fill it from the URI.
++                let name = parsed.suggested_title();
++                if !name.is_empty() {
++                    self.oath.add.name = name;
++                }
++                self.oath.add.totp = true; // otpauth://totp
++            }
++            Err(e) => self.log(Severity::Err, format!("scan QR: {e}")),
++        }
++    }
++
++    /// Fill the on-device OTP add-dialog fields from a scanned screen QR.
++    #[cfg(feature = "qr")]
++    fn otp_scan_qr(&mut self) {
++        match self.scan_qr_parsed() {
++            Ok((secret, parsed)) => {
++                self.otp.add.secret = secret;
++                if let Some(issuer) = &parsed.issuer {
++                    self.otp.add.app_name = issuer.clone();
++                }
++                if let Some(account) = &parsed.account {
++                    self.otp.add.account_name = account.clone();
++                }
++                self.otp.add.sha256 = matches!(parsed.algorithm, HmacAlgo::Sha256);
++                self.otp.add.digits = parsed.digits as u8;
++                self.otp.add.period = match parsed.time_step {
++                    TimeStep::Seconds30 => 30,
++                    TimeStep::Seconds60 => 60,
++                };
++                self.otp.add.totp = true; // otpauth://totp
++            }
++            Err(e) => self.log(Severity::Err, format!("scan QR: {e}")),
++        }
++    }
++
++    fn prog_scan_qr(&mut self) {
++        self.prog_status = None;
++        let uri = match qrscan::scan_screens_for_otpauth() {
++            Ok(u) => u,
++            Err(e) => {
++                self.prog_status = Some((false, e));
++                return;
++            }
++        };
++        let parsed = match parse_otpauth(&uri) {
++            Ok(p) => p,
++            Err(e) => {
++                self.prog_status = Some((false, format!("QR parse failed: {e}")));
++                return;
++            }
++        };
++        // Fill the seed with the original base32 secret from the URI.
++        let secret = uri
++            .find("secret=")
++            .map(|i| {
++                let rest = &uri[i + 7..];
++                let end = rest.find('&').unwrap_or(rest.len());
++                rest[..end].to_owned()
++            })
++            .unwrap_or_default();
++        if secret.is_empty() {
++            self.prog_status = Some((false, "scanned QR has no secret".into()));
++            return;
++        }
++        self.prog_seed_input = secret;
++        self.prog_seed_hex = false;
++        self.prog_algo_sha256 = matches!(parsed.algorithm, HmacAlgo::Sha256);
++        self.prog_step_60 = matches!(parsed.time_step, TimeStep::Seconds60);
++        self.prog_status = Some((true, "Filled seed and parameters from the scanned QR.".into()));
++    }
++
+     /// The Molto2 import dialogs (otpauth:// + bulk). Reused verbatim from the
+     /// original Molto2 view; only the entry point changed.
+     fn molto_dialogs(&mut self, ctx: &egui::Context, _p: &Palette) {
+diff --git a/crates/keyroost/src/otp_pane.rs b/crates/keyroost/src/otp_pane.rs
+index 476ec06..0cbe915 100644
+--- a/crates/keyroost/src/otp_pane.rs
++++ b/crates/keyroost/src/otp_pane.rs
+@@ -288,28 +288,32 @@ impl App {
+                     } else {
+                         "USB-HID"
+                     };
+-                    // Read the serial first, while we hold the session. It's a
+-                    // nice-to-have: some models/readers don't expose it over CCID,
+-                    // so a failure here must not block the entry list.
+-                    let serial = session
+-                        .read_serial()
+-                        .ok()
+-                        .map(|sn| sn.iter().map(|b| format!("{b:02x}")).collect::<String>());
+-                    // Determine whether HOTP-on-touch is usable: it types over the
+-                    // keyboard-HID interface, so a key with that interface disabled
+-                    // (or that doesn't support the feature) returns 6A81. Detect it
+-                    // up front so the UI can disable the action with a reason rather
+-                    // than letting the user fill the form and fail at submit.
++                    // Over a PC/SC reader (NFC/contact) we skip the best-effort
++                    // serial and device-config reads and go straight to the entry
++                    // enumeration — exactly what the CLI `otp list` does. Two
++                    // reasons: (1) `read_serial` selects the FIDO applet for the
++                    // serial, a detour only needed for display; (2) some contact
++                    // (T=0) readers stall on the Case-2 `READ_CONFIG` APDU, which
++                    // would hang the whole list. Both are cosmetic (serial string,
++                    // HOTP-on-touch hints), so their absence degrades gracefully.
++                    let pcsc = session.is_pcsc();
++                    let serial = if pcsc {
++                        None
++                    } else {
++                        session
++                            .read_serial()
++                            .ok()
++                            .map(|sn| sn.iter().map(|b| format!("{b:02x}")).collect::<String>())
++                    };
+                     // Read the device config once; derive both the touch-HOTP
+-                    // availability and the interface states from it. On some
+-                    // firmware the full config block is only served over USB-HID
+-                    // (CCID/NFC answers READ_CONFIG with a 1-byte stub, which
+-                    // `read_config` rejects). We do NOT force a HID read here:
+-                    // Windows restricts the FIDO HID interface for non-elevated
+-                    // processes, so forcing it would surface an "access denied"
+-                    // error on a path that should degrade quietly. If config is
+-                    // unavailable, status simply shows as unknown.
+-                    let dev_info = session.read_device_info().ok();
++                    // availability and the interface states from it. Skipped over
++                    // PC/SC (see above) — `dev_info` stays None, which the match
++                    // arms below already treat as "unknown" rather than blocking.
++                    let dev_info = if pcsc {
++                        None
++                    } else {
++                        session.read_device_info().ok()
++                    };
+                     let (touch_ok, touch_why): (Option<bool>, Option<&'static str>) =
+                         match &dev_info {
+                             Some(info) => {
+@@ -1099,13 +1103,31 @@ impl App {
+                     ui.end_row();
+ 
+                     ui.label("Secret (Base32)");
+-                    ui.add(
+-                        egui::TextEdit::singleline(&mut self.otp.add.secret)
+-                            .password(true)
+-                            .desired_width(260.0),
+-                    );
++                    {
++                        let mut rev =
++                            self.secret_reveal.get("otp-add-secret").copied().unwrap_or(false);
++                        crate::secret_edit(ui, p, &mut self.otp.add.secret, &mut rev, "", 260.0);
++                        self.secret_reveal.insert("otp-add-secret", rev);
++                    }
+                     ui.end_row();
+ 
++                    #[cfg(feature = "qr")]
++                    {
++                        ui.label("");
++                        let (resp, icon_center, fg) = theme::button_with_icon(
++                            ui,
++                            p,
++                            BtnKind::Default,
++                            "Scan QR",
++                            14.0,
++                        );
++                        crate::paint_qr_icon(ui, icon_center, fg);
++                        if resp.clicked() {
++                            self.otp_scan_qr();
++                        }
++                        ui.end_row();
++                    }
++
+                     ui.label("Type");
+                     ui.horizontal(|ui| {
+                         ui.selectable_value(&mut self.otp.add.totp, true, "TOTP");
+@@ -1233,16 +1255,27 @@ impl App {
+                     } else {
+                         "Secret (Base32)"
+                     });
+-                    ui.add(
+-                        egui::TextEdit::singleline(&mut self.otp.button_hotp.secret)
+-                            .password(true)
+-                            .hint_text(if configured {
+-                                "leave blank to keep current seed"
+-                            } else {
+-                                ""
+-                            })
+-                            .desired_width(260.0),
+-                    );
++                    let bh_hint = if configured {
++                        "leave blank to keep current seed"
++                    } else {
++                        ""
++                    };
++                    {
++                        let mut rev = self
++                            .secret_reveal
++                            .get("otp-buttonhotp-secret")
++                            .copied()
++                            .unwrap_or(false);
++                        crate::secret_edit(
++                            ui,
++                            p,
++                            &mut self.otp.button_hotp.secret,
++                            &mut rev,
++                            bh_hint,
++                            260.0,
++                        );
++                        self.secret_reveal.insert("otp-buttonhotp-secret", rev);
++                    }
+                     ui.end_row();
+ 
+                     // Digit length is only settable as part of a seed write
+diff --git a/crates/keyroost/src/qrscan.rs b/crates/keyroost/src/qrscan.rs
+new file mode 100644
+index 0000000..90edc10
+--- /dev/null
++++ b/crates/keyroost/src/qrscan.rs
+@@ -0,0 +1,59 @@
++//! Scan a TOTP QR code from the screen(s) (feature `qr`).
++//!
++//! Captures every connected display as PNG and hands the bytes to
++//! `keyroost_qr::texts_from_image`, the crate the app already uses to decode QR
++//! screenshots from files — so the screen path and the file/paste paths share
++//! one decoder and one parser. The only capability this module adds is grabbing
++//! the screen; decoding and otpauth parsing are entirely reused.
++//!
++//! Capture and decode happen locally — nothing is sent anywhere.
++
++/// Capture all screens and return the first `otpauth://totp` URI found, or an
++/// error describing why nothing usable was scanned. The returned string is the
++/// raw URI, to be fed to `keyroost_import::parse_otpauth` like a pasted URI.
++pub fn scan_screens_for_otpauth() -> Result<String, String> {
++    let screens =
++        screenshots::Screen::all().map_err(|e| format!("could not enumerate screens: {e}"))?;
++    if screens.is_empty() {
++        return Err("no screens available to scan".into());
++    }
++
++    let mut found_any_qr = false;
++    let mut saw_hotp = false;
++
++    for screen in screens {
++        let image = match screen.capture() {
++            Ok(img) => img,
++            Err(_) => continue, // skip a screen we can't grab
++        };
++        // `screenshots` returns PNG-encoded bytes; keyroost-qr decodes PNG/JPEG.
++        let png = image.buffer();
++        let texts = match keyroost_qr::texts_from_image(png) {
++            Ok(t) => t,
++            Err(_) => continue,
++        };
++        for text in texts.iter() {
++            let trimmed = text.trim();
++            let lower = trimmed.to_ascii_lowercase();
++            if lower.starts_with("otpauth://totp/") {
++                return Ok(trimmed.to_string());
++            }
++            if lower.starts_with("otpauth://") {
++                found_any_qr = true;
++                if lower.starts_with("otpauth://hotp/") {
++                    saw_hotp = true;
++                }
++            } else if !trimmed.is_empty() {
++                found_any_qr = true;
++            }
++        }
++    }
++
++    if saw_hotp {
++        Err("this is an HOTP code; only TOTP is supported".into())
++    } else if found_any_qr {
++        Err("a QR code was found, but it isn't a TOTP (otpauth://totp) code".into())
++    } else {
++        Err("no QR code found on screen — make sure the TOTP QR is visible".into())
++    }
++}
+diff --git a/crates/keyroost/src/ui/device.rs b/crates/keyroost/src/ui/device.rs
+index 0ac8f2e..993dfd3 100644
+--- a/crates/keyroost/src/ui/device.rs
++++ b/crates/keyroost/src/ui/device.rs
+@@ -31,7 +31,7 @@ impl DeviceView for Device {
+     }
+ 
+     fn tabs(&self) -> Vec<CapTab> {
+-        if self.kind == DeviceKind::Token {
++        if self.kind == DeviceKind::Token || self.kind == DeviceKind::ProgToken {
+             return Vec::new();
+         }
+         let mut v = vec![CapTab::Overview];
+diff --git a/crates/keyroost/src/ui/theme.rs b/crates/keyroost/src/ui/theme.rs
+index bc9f80e..8dfe71e 100644
+--- a/crates/keyroost/src/ui/theme.rs
++++ b/crates/keyroost/src/ui/theme.rs
+@@ -361,6 +361,81 @@ pub fn button(ui: &mut egui::Ui, p: &Palette, kind: BtnKind, label: &str) -> Res
+     resp
+ }
+ 
++/// Like [`button`], but reserves room for a small icon on the left, inside the
++/// button. Returns the response and the center point at which the caller should
++/// paint the icon (using the returned foreground color), so the icon and label
++/// read as one control. `icon_w` is the icon's box width in points.
++pub fn button_with_icon(
++    ui: &mut egui::Ui,
++    p: &Palette,
++    kind: BtnKind,
++    label: &str,
++    icon_w: f32,
++) -> (Response, egui::Pos2, Color32) {
++    let (base_fill, base_fg, base_stroke) = match kind {
++        BtnKind::Primary => (p.accent, p.accent_ink, Stroke::NONE),
++        BtnKind::Default => (p.raised2, p.txt, Stroke::new(1.0, p.line)),
++        BtnKind::Ghost => (Color32::TRANSPARENT, p.txt2, Stroke::new(1.0, p.line)),
++        BtnKind::Danger => (p.err, p.accent_ink, Stroke::NONE),
++    };
++
++    let font = f_sb(13.0);
++    let galley = ui.painter().layout_no_wrap(label.to_owned(), font, base_fg);
++    let pad_x = 14.0;
++    let icon_gap = 6.0;
++    let size = egui::vec2(
++        galley.size().x + icon_w + icon_gap + pad_x * 2.0,
++        32.0,
++    );
++    let (rect, resp) = ui.allocate_exact_size(size, egui::Sense::click());
++
++    let pressed = resp.is_pointer_button_down_on();
++    let hovered = resp.hovered();
++    let fill = if pressed {
++        darken(
++            if matches!(kind, BtnKind::Ghost) {
++                p.raised2
++            } else {
++                base_fill
++            },
++            0.12,
++        )
++    } else if hovered {
++        match kind {
++            BtnKind::Ghost => p.raised2,
++            BtnKind::Default => lighten(base_fill, 0.10),
++            _ => lighten(base_fill, 0.08),
++        }
++    } else {
++        base_fill
++    };
++    let stroke = if hovered && matches!(kind, BtnKind::Default | BtnKind::Ghost) {
++        Stroke::new(1.0, p.accent)
++    } else {
++        base_stroke
++    };
++    let fg = if hovered && matches!(kind, BtnKind::Ghost) {
++        p.txt
++    } else {
++        base_fg
++    };
++
++    let painter = ui.painter();
++    painter.rect(rect, Rounding::same(8.0), fill, stroke);
++    // Icon sits at the left padding; label follows after the gap.
++    let icon_center = egui::pos2(rect.left() + pad_x + icon_w * 0.5, rect.center().y);
++    let galley = painter.layout_no_wrap(label.to_owned(), f_sb(13.0), fg);
++    let label_pos = egui::pos2(
++        rect.left() + pad_x + icon_w + icon_gap,
++        rect.center().y - galley.size().y * 0.5,
++    );
++    painter.galley(label_pos, galley, fg);
++    if hovered {
++        ui.ctx().set_cursor_icon(egui::CursorIcon::PointingHand);
++    }
++    (resp, icon_center, fg)
++}
++
+ /// Segmented control: a row of small buttons; returns the newly-clicked value.
+ /// `accent` lets the Molto2 use brand/amber while the rest use the accent.
+ pub fn segmented(
+diff --git a/crates/keyroostctl/Cargo.toml b/crates/keyroostctl/Cargo.toml
+index b40ef1f..e6ed1b1 100644
+--- a/crates/keyroostctl/Cargo.toml
++++ b/crates/keyroostctl/Cargo.toml
+@@ -24,6 +24,7 @@ keyroost-keyring = { path = "../keyroost-keyring", version = "0.7.1" }
+ keyroost-resolve = { path = "../keyroost-resolve", version = "0.7.1" }
+ keyroost-oath = { path = "../keyroost-oath", version = "0.7.1" }
+ keyroost-token2otp = { path = "../keyroost-token2otp", version = "0.7.1" }
++keyroost-token2prog = { path = "../keyroost-token2prog", version = "0.7.1" }
+ keyroost-openpgp = { path = "../keyroost-openpgp", version = "0.7.1" }
+ keyroost-qr = { path = "../keyroost-qr", version = "0.7.1" }
+ keyroost-import = { path = "../keyroost-import", version = "0.7.1", features = ["bulk", "encrypted"] }
+diff --git a/crates/keyroostctl/src/main.rs b/crates/keyroostctl/src/main.rs
+index 337fa85..790fa87 100644
+--- a/crates/keyroostctl/src/main.rs
++++ b/crates/keyroostctl/src/main.rs
+@@ -328,6 +328,12 @@ enum Cmd {
+         #[command(subcommand)]
+         cmd: MoltoCmd,
+     },
++    /// Token2 2nd-generation single-profile programmable TOTP token. Uses the
++    /// token's fixed device key; no customer key is needed.
++    Prog {
++        #[command(subcommand)]
++        cmd: ProgCmd,
++    },
+     /// List connected devices: PC/SC readers and FIDO HID authenticators.
+     List {
+         /// Show every HID device, not just those advertising the FIDO usage page.
+@@ -1202,6 +1208,56 @@ struct KeyArgs {
+     key_ascii_env: Option<String>,
+ }
+ 
++/// Token2 single-profile programmable token subcommands. These talk to the
++/// token over a PC/SC reader and authenticate with the token's fixed device key
++/// (no customer key, no profile index).
++#[derive(Subcommand)]
++enum ProgCmd {
++    /// Print device serial number and on-device UTC time. No auth needed.
++    Info {
++        /// Match the reader whose name contains this substring (when more than
++        /// one reader is connected).
++        #[arg(long, value_name = "SUBSTR")]
++        reader: Option<String>,
++    },
++    /// Write the TOTP seed. Supply exactly one of --hex / --base32 / their
++    /// -env / -stdin variants. Programs the configuration's clock too via
++    /// --config-time if you also pass `config` separately.
++    Seed {
++        #[arg(long, value_name = "SUBSTR")]
++        reader: Option<String>,
++        /// Seed in hex. Argv is visible in `ps`; prefer --hex-stdin.
++        #[arg(long, conflicts_with = "base32", value_name = "HEX")]
++        hex: Option<String>,
++        /// Seed in base32 (RFC 4648; whitespace and dashes tolerated).
++        #[arg(long, value_name = "B32")]
++        base32: Option<String>,
++        /// Read the hex seed from the named environment variable.
++        #[arg(long, value_name = "VAR")]
++        hex_env: Option<String>,
++        /// Read the base32 seed from the named environment variable.
++        #[arg(long, value_name = "VAR")]
++        base32_env: Option<String>,
++        /// Read the hex seed from stdin (one line).
++        #[arg(long)]
++        hex_stdin: bool,
++        /// Read the base32 seed from stdin (one line).
++        #[arg(long)]
++        base32_stdin: bool,
++    },
++    /// Set the device configuration and seed the clock with the host's UTC time.
++    Config {
++        #[arg(long, value_name = "SUBSTR")]
++        reader: Option<String>,
++        #[arg(long, value_enum, default_value_t = AlgoArg::Sha1)]
++        algorithm: AlgoArg,
++        #[arg(long, value_enum, default_value_t = StepArg::S30)]
++        time_step: StepArg,
++        #[arg(long, value_enum, default_value_t = TimeoutArg::S30)]
++        display_timeout: TimeoutArg,
++    },
++}
++
+ /// Token2 Molto2 / Molto2v2 subcommands. These talk to the Molto2 PC/SC
+ /// reader, authenticated with the customer key (see the `--key*` flags).
+ #[derive(Subcommand)]
+@@ -2040,6 +2096,7 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
+                     kind: match d.kind {
+                         DeviceKind::Key => "key",
+                         DeviceKind::Token => "token",
++                        DeviceKind::ProgToken => "prog-token",
+                     },
+                     caps: d.cap_badges(),
+                 })
+@@ -2131,6 +2188,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
+         return run_molto(cmd, key, cli.debug);
+     }
+ 
++    if let Cmd::Prog { cmd } = cmd {
++        return run_prog(cmd, cli.debug);
++    }
++
+     unreachable!("every subcommand is handled above");
+ }
+ 
+@@ -2540,6 +2601,188 @@ fn run_molto(cmd: &MoltoCmd, key: &KeyArgs, debug: bool) -> Result<(), Box<dyn s
+     Ok(())
+ }
+ 
++/// Resolve a reader for the single-profile programmable token: auto-use a lone
++/// connected reader, or match an explicit `--reader` substring.
++fn prog_pick_reader(explicit: Option<&str>) -> Result<String, Box<dyn std::error::Error>> {
++    let readers = keyroost_transport::Session::list_readers()?;
++    resolve_reader(readers, explicit, "programmable-token")
++}
++
++fn run_prog(cmd: &ProgCmd, debug: bool) -> Result<(), Box<dyn std::error::Error>> {
++    use keyroost_token2prog as prog;
++    use keyroost_transport::Token2ProgSession;
++
++    match cmd {
++        ProgCmd::Info { reader } => {
++            let name = prog_pick_reader(reader.as_deref())?;
++            let mut session = Token2ProgSession::open_named(&name)?;
++            session.set_debug(debug);
++            let info = session.read_info()?;
++            let model = info.model();
++            if json_output() {
++                println!(
++                    "{{\"serial\":\"{}\",\"model\":{},\"utc_time\":{}}}",
++                    info.serial,
++                    match model {
++                        Some(m) => format!("\"{m}\""),
++                        None => "null".to_string(),
++                    },
++                    info.utc_time
++                );
++            } else {
++                match model {
++                    Some(m) => println!("model:    {m}"),
++                    None => println!("model:    (unrecognized serial — not a known Token2 model)"),
++                }
++                println!("serial:   {}", info.serial);
++                println!("utc_time: {}", info.utc_time);
++            }
++        }
++        ProgCmd::Seed {
++            reader,
++            hex,
++            base32,
++            hex_env,
++            base32_env,
++            hex_stdin,
++            base32_stdin,
++        } => {
++            let seed = resolve_prog_seed(
++                hex.as_deref(),
++                base32.as_deref(),
++                hex_env.as_deref(),
++                base32_env.as_deref(),
++                *hex_stdin,
++                *base32_stdin,
++            )?;
++            let name = prog_pick_reader(reader.as_deref())?;
++            let mut session = Token2ProgSession::open_named(&name)?;
++            session.set_debug(debug);
++            // Refuse to program a device whose serial does not match a known
++            // Token2 programmable-token model — guards against writing to the
++            // wrong card on a shared reader.
++            prog_guard_model(&mut session)?;
++            session.authenticate()?;
++            session.set_seed(&seed)?;
++            println!("seed programmed ({} bytes).", seed.len());
++        }
++        ProgCmd::Config {
++            reader,
++            algorithm,
++            time_step,
++            display_timeout,
++        } => {
++            let now = std::time::SystemTime::now()
++                .duration_since(std::time::UNIX_EPOCH)
++                .map(|d| d.as_secs() as u32)
++                .unwrap_or(0);
++            let cfg = prog::Config {
++                display_timeout: match display_timeout {
++                    TimeoutArg::S15 => prog::DisplayTimeout::Sec15,
++                    TimeoutArg::S30 => prog::DisplayTimeout::Sec30,
++                    TimeoutArg::S60 => prog::DisplayTimeout::Sec60,
++                    TimeoutArg::S120 => prog::DisplayTimeout::Sec120,
++                },
++                algorithm: match algorithm {
++                    AlgoArg::Sha1 => prog::HmacAlgo::Sha1,
++                    AlgoArg::Sha256 => prog::HmacAlgo::Sha256,
++                },
++                time_step: match time_step {
++                    StepArg::S30 => prog::TimeStep::Seconds30,
++                    StepArg::S60 => prog::TimeStep::Seconds60,
++                },
++                utc_time: now,
++            };
++            let name = prog_pick_reader(reader.as_deref())?;
++            let mut session = Token2ProgSession::open_named(&name)?;
++            session.set_debug(debug);
++            // Refuse to program an unrecognized device (see Seed above).
++            prog_guard_model(&mut session)?;
++            session.authenticate()?;
++            session.set_config(&cfg)?;
++            println!("config programmed (clock set to {now}).");
++        }
++    }
++    Ok(())
++}
++
++/// Read the device info and refuse to continue unless the serial matches a known
++/// Token2 programmable-token model. Returns the resolved model name on success.
++/// Used to gate the write commands so the tool never programs an unexpected card.
++fn prog_guard_model(
++    session: &mut keyroost_transport::Token2ProgSession,
++) -> Result<&'static str, Box<dyn std::error::Error>> {
++    let info = session.read_info()?;
++    match info.model() {
++        Some(model) => {
++            eprintln!("[*] {model} (serial {})", info.serial);
++            Ok(model)
++        }
++        None => Err(format!(
++            "serial '{}' does not match any known Token2 programmable-token model; \
++             refusing to program this device. Run `keyroostctl prog info` to inspect it.",
++            info.serial
++        )
++        .into()),
++    }
++}
++
++/// Decode a programmable-token seed from exactly one of the supplied sources.
++fn resolve_prog_seed(
++    hex: Option<&str>,
++    base32: Option<&str>,
++    hex_env: Option<&str>,
++    base32_env: Option<&str>,
++    hex_stdin: bool,
++    base32_stdin: bool,
++) -> Result<Vec<u8>, Box<dyn std::error::Error>> {
++    use std::io::Read;
++    let sources = [
++        hex.is_some(),
++        base32.is_some(),
++        hex_env.is_some(),
++        base32_env.is_some(),
++        hex_stdin,
++        base32_stdin,
++    ]
++    .iter()
++    .filter(|b| **b)
++    .count();
++    if sources != 1 {
++        return Err("supply exactly one seed source (--hex / --base32 / -env / -stdin)".into());
++    }
++    let read_stdin = || -> Result<String, Box<dyn std::error::Error>> {
++        let mut s = String::new();
++        std::io::stdin().read_to_string(&mut s)?;
++        Ok(s)
++    };
++    let (raw, is_hex): (String, bool) = if let Some(h) = hex {
++        (h.to_string(), true)
++    } else if let Some(b) = base32 {
++        (b.to_string(), false)
++    } else if let Some(v) = hex_env {
++        (std::env::var(v)?, true)
++    } else if let Some(v) = base32_env {
++        (std::env::var(v)?, false)
++    } else if hex_stdin {
++        (read_stdin()?, true)
++    } else {
++        (read_stdin()?, false)
++    };
++    let seed = if is_hex {
++        hex_decode(raw.trim())?
++    } else {
++        base32_decode(raw.trim())?
++    };
++    if seed.is_empty() || seed.len() > 63 {
++        return Err(format!("seed must be 1..=63 bytes (got {})", seed.len()).into());
++    }
++    // Pad short secrets to the device's 20-byte stored length with trailing
++    // zeros, matching the vendor tool — otherwise the device computes TOTP over
++    // a shorter seed than an authenticator app set up from the same secret.
++    Ok(keyroost_token2prog::pad_totp_seed(seed))
++}
++
+ /// Environment diagnosis: each check prints one ✓/✗/– line with the fix
+ /// inline. Never touches card state and always exits 0 — it's a flashlight,
+ /// not a gate.
+diff --git a/crates/keyroostctl/src/overview.rs b/crates/keyroostctl/src/overview.rs
+index a8023e6..123b2a0 100644
+--- a/crates/keyroostctl/src/overview.rs
++++ b/crates/keyroostctl/src/overview.rs
+@@ -90,6 +90,7 @@ pub fn correlated_lines(devices: &[Device]) -> Vec<String> {
+         .map(|d| {
+             let kind = match d.kind {
+                 DeviceKind::Token => "Token",
++                DeviceKind::ProgToken => "Programmable token",
+                 DeviceKind::Key => "Key",
+             };
+             let pairing = match (&d.hid_path, &d.reader) {
+diff --git a/docs/PROTOCOL-token2prog.md b/docs/PROTOCOL-token2prog.md
+new file mode 100644
+index 0000000..d5c52f9
+--- /dev/null
++++ b/docs/PROTOCOL-token2prog.md
+@@ -0,0 +1,190 @@
++# Token2 single-profile programmable TOTP token wire protocol
++
++This document describes the wire protocol the Token2 **2nd-generation
++single-profile programmable TOTP token** speaks (internally "OTPC P2"), as
++implemented by `keyroost-token2prog` and observed against the vendor's reference
++configurator.
++
++> The crypto path (SM4 block encryption and the SM4-CBC MAC) is covered by unit
++> tests whose expected values were produced by an independent third-party SM4
++> implementation, itself validated against the GM/T 0002 SM4 known-answer test.
++
++It is a close relative of the [Molto2 protocol](PROTOCOL.md): the same NFC
++Type-4 / ISO 7816 transport, the same SM4 cipher, and the same ISO/IEC 9797-1
++MAC. The differences are called out explicitly below.
++
++## Transport
++
++- **Form factor:** a card-style NFC token, read over a contactless or
++  contact-capable PC/SC reader. There is no USB-HID interface.
++- **Reader:** any connected PC/SC reader; the token is addressed directly, with
++  **no applet SELECT** (the same posture as the Molto2 path and the vendor
++  reference tool).
++- **APDUs:** short ISO 7816 case-3 (command + data) and case-2 (expecting a
++  response). Over T=0 contact readers, responses are reassembled through the
++  standard `61 XX` / `GET RESPONSE` continuation; `6C XX` triggers a re-issue
++  with the corrected `Le`.
++
++## Cryptographic primitives
++
++| Primitive | Purpose |
++|---|---|
++| **SM4** (GB/T 32907-2016, 128-bit block, 128-bit key, 32 rounds) | Encrypts the seed and the auth response; provides the per-command MAC |
++| **base32** (RFC 4648) | Encodes TOTP secrets for entry; the wire format is raw bytes |
++
++Unlike the Molto2 — which derives its SM4 key from a customer key via
++`SHA1(customer_key)[..16]` — this token uses a **single fixed device key**:
++
++```
++8A D2 06 88 3C A3 69 48 2A B2 71 82 B6 E8 32 24
++```
++
++There is no per-device secret and no customer key to supply. The key is embedded
++in `keyroost_token2prog::DEVICE_SM4_KEY`.
++
++## Authentication handshake
++
++Required before either secure command (CLA `0x84`).
++
++1. Host sends `80 4B 08 00 01 00` (request the challenge).
++2. Device responds with 8 bytes + `SW=9000`.
++3. Host "inflates" the challenge to 16 bytes by appending **eight zero bytes**,
++   SM4-encrypts that block with the device key, and sends
++   `80 CE 00 00 10 <16-byte ciphertext>`.
++4. On success the device returns `SW=9000`. If the device key is locked it
++   returns `SW=6983`.
++
++## Per-command MAC (secure commands)
++
++For every CLA `0x84` command, the last 4 bytes of the payload are a MAC computed
++exactly as on the Molto2:
++
++1. Build the MAC input: `[CLA=0x80, INS, P1, P2, Lc'] || payload`, where `Lc'`
++   is the **encrypted-payload** length (not the final `Lc` including the MAC).
++2. ISO/IEC 9797-1 padding method 2 (`0x80` then zeros to a 16-byte boundary),
++   only if the input isn't already block-aligned.
++3. SM4-CBC encrypt with IV = 16 zero bytes.
++4. The MAC is the first 4 bytes of the last ciphertext block.
++
++As on the Molto2, the MAC header in step 1 uses the **plain** class `0x80` even
++though the transmitted APDU uses `0x84`.
++
++## Command catalog
++
++In the tables below "Lc" is the length of the entire payload (encrypted body +
++MAC). All multi-byte numbers are big-endian unless noted. There is no profile
++selector — every command targets the single slot.
++
++### Plain commands (CLA `0x80`, no auth, no MAC)
++
++| INS | P1 | P2 | Payload | Returns | Description |
++|---|---|---|---|---|---|
++| `0x41` | `00` | `00` | `02 11` | Device info | Serial + system time |
++| `0x4B` | `08` | `00` | `00` | 8-byte challenge | Start auth handshake |
++| `0xCE` | `00` | `00` | 16-byte SM4(challenge \|\| 8 zeros) | — (sw=9000 / 6983) | Finish auth handshake |
++
++> **Difference from Molto2:** the info request carries a two-byte body `02 11`
++> rather than a bare `Le`, and the challenge request carries a one-byte body
++> `00`.
++
++#### `0x41` get info response layout
++
++```
++offset  length  field
++0       3       (unknown / device-specific header)
++3       1       serial-string length N
++4       N       serial number, ASCII
++4+N     2       (unknown / separator)
++6+N     4       UTC time as a big-endian u32 (unix epoch seconds)
++```
++
++The leading 3 bytes and the 2-byte separator are not confirmed constant; the
++parser reads `N` from offset 3 and tolerates the surrounding bytes, mirroring the
++vendor reference.
++
++#### Model identification from the serial
++
++The printed serial begins with a product-specific digit prefix. The known
++mapping (`keyroost_token2prog::model_for_serial`, matched longest-prefix-first):
++
++| Serial prefix | Model |
++|---|---|
++| `8659612` | OTPC-P1-i |
++| `8659622` | OTPC-P2-i |
++| `8659621` | OTPC-P2-i-NB |
++| `8659600` | miniOTP-2-i |
++| `8659601` | miniOTP-3-i |
++| `8659609` | miniOTP-3-i-NB |
++| `8659610` | C301-i |
++| `8659632` | C302-i |
++
++An unrecognized prefix resolves to no model; callers fall back to displaying the
++raw serial.
++
++### Secure commands (CLA `0x84`, MAC required)
++
++| INS | P1 | P2 | Encrypted body | Purpose |
++|---|---|---|---|---|
++| `0xC5` | `01` | `00` | SM4-ECB(seed, padded) | Write the OTP seed |
++| `0xD4` | `00` | `00` | plaintext TLV (see below) | Write configuration / sync time |
++
++#### Seed (`INS 0xC5 P1=0x01`)
++
++The seed is 1..=63 raw bytes. Two on-wire forms exist:
++
++- **General form.** ISO/IEC 9797-1 minimal padding (`0x80` then zeros to a
++  16-byte boundary), SM4-ECB encrypted. A 20-byte seed therefore yields a
++  32-byte ciphertext; with the 4-byte MAC, `Lc = 0x24`.
++- **32-byte form.** A 32-byte seed is given an **extra full pad block** — `0x80`
++  followed by fifteen `0x00` — before encryption, yielding a 48-byte
++  ciphertext; with the MAC, `Lc = 0x34`. This reflects the device's
++  longer-seed framing in the vendor tool.
++
++In both cases the transmitted APDU is `84 C5 01 00 <Lc> <ciphertext> <MAC>`,
++while the MAC header is `80 C5 01 00 <ciphertext-length>`.
++
++#### Config TLV (`INS 0xD4 P1=0x00`)
++
++The body is a 19-byte plaintext TLV (not encrypted) followed by the 4-byte MAC:
++
++```
++81 11
++   1F 01 <display_timeout: 0=15s, 1=30s, 2=60s, 3=120s>
++   0F 04 <UTC time u32 BE>
++   86 06
++      0A 01 <hmac_algo: 1=SHA1, 2=SHA256>
++      0D 01 <time_step: 0x1E for 30s, 0x3C for 60s>
++```
++
++> **Difference from Molto2:** the outer length is `0x11` (17) rather than `0x14`
++> (20), and the inner `TOTP_PARAM` block is `0x06` (6) bytes with **no digits
++> field** (`0B 01 <digits>`) — this single-profile token does not expose a
++> configurable digit count here. The header is `D4 00 00` (no profile byte)
++> rather than `D4 01 <profile>`.
++
++The high two bits of the time-step byte flag seconds (`b00`) vs minutes
++(`b01`); only the seconds forms `0x1E` (30s) and `0x3C` (60s) are used.
++
++> **Seed/clock dependency:** writing a new configuration resets the seed on
++> tokens with restricted time-sync; tokens with unrestricted sync keep it. When
++> changing any configuration value, supply them all (the device expects the full
++> TLV).
++
++## Status words
++
++| SW | Meaning |
++|---|---|
++| `9000` | Success |
++| `6983` | Authentication failed — the device key is locked |
++| `61 XX` | `XX` more response bytes available (issue `GET RESPONSE`; T=0 readers) |
++| `6C XX` | Wrong `Le`; re-issue the command with `Le = XX` (T=0 readers) |
++| `6700` | Wrong length — sent if an extended-length `Lc` is used where short-form is required |
++
++## Known unknowns
++
++- The 3-byte header and 2-byte separator inside the `get info` response are
++  carried through but not interpreted.
++- The exact set of `display_timeout` values the firmware accepts beyond the four
++  documented here is not independently confirmed.
++- A factory-reset / key-rotation command (present on the Molto2 as `0x56` /
++  `0xD7`) has not been observed for this token and is not implemented.
