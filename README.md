@@ -1,4 +1,5 @@
-> **Note:** This repository is solely for rebranding the package with different colors and branding. The main codebase is available here: [https://github.com/token2/keyroost](https://github.com/token2/keyroost), along with its upstream project.
+>Note: This repository exists as a temporary measure to provide faster access to prebuilt binaries. Once the upstream project offers timely releases, this repository will be retired and users will be directed to the official upstream releases instead.
+
 
 
 # Token2 Companion rebrand — optional feature patches
