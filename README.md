@@ -1,3 +1,18 @@
+> [!WARNING]
+> ## This repository is no longer maintained
+>
+> **This repository is archived and is no longer maintained or monitored.**
+>
+> Development has moved upstream to **[framefilter/keyroost](https://github.com/framefilter/keyroost)**, which is now the canonical source for Keyroost and its releases.
+>
+> - **No new releases** will be published here. Download the latest builds for Windows, macOS, and Linux from the [Keyroost releases page](https://github.com/framefilter/keyroost/releases).
+> - **Issues and pull requests are not monitored.** Anything opened here may go unanswered — please use [framefilter/keyroost/issues](https://github.com/framefilter/keyroost/issues) instead.
+> - The code here is kept for historical reference only and may be out of date.
+>
+> Thank you to everyone who used and contributed to this repository.
+
+
+
 >Note: This repository exists as a temporary measure to provide faster access to prebuilt binaries. Once the upstream project offers timely releases, this repository will be retired and users will be directed to the official upstream releases instead.
 
 
